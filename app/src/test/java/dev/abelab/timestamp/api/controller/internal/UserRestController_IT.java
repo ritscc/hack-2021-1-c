@@ -48,6 +48,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String CREATE_USER_PATH = BASE_PATH;
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
+	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -472,6 +473,50 @@ public class UserRestController_IT extends AbstractRestController_IT {
 		void 異_無効な認証ヘッダ() throws Exception {
 			// test
 			final var request = deleteRequest(String.format(DELETE_USER_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * ログインユーザ詳細取得APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class GetLoginUserTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_ログインユーザの詳細を取得(final UserRoleEnum userRole) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(userRole);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			// test
+			final var request = getRequest(GET_LOGIN_USER_PATH);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			final var response = execute(request, HttpStatus.OK, UserResponse.class);
+
+			// verify
+			assertThat(response) //
+				.extracting(UserResponse::getEmail, UserResponse::getFirstName, UserResponse::getLastName, UserResponse::getRoleId) //
+				.containsExactly( //
+					response.getEmail(), response.getFirstName(), response.getLastName(), response.getRoleId());
+		}
+
+		Stream<Arguments> 正_ログインユーザの詳細を取得() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// test
+			final var request = getRequest(GET_LOGIN_USER_PATH);
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}
