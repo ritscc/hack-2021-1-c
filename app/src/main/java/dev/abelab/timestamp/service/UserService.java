@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 
 import lombok.*;
+import dev.abelab.timestamp.db.entity.User;
+import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.repository.UserRepository;
 import dev.abelab.timestamp.logic.UserLogic;
 import dev.abelab.timestamp.util.AuthUtil;
+import dev.abelab.timestamp.util.UserRoleUtil;
 
 @RequiredArgsConstructor
 @Service
@@ -45,6 +48,33 @@ public class UserService {
             .collect(Collectors.toList());
 
         return new UsersResponse(userResponses);
+    }
+
+    /**
+     * ユーザを作成
+     *
+     * @param credentials 資格情報
+     *
+     * @param requestBody ユーザ作成リクエスト
+     */
+    @Transactional
+    public void createUser(final String credentials, final UserCreateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // 管理者かチェック
+        AuthUtil.checkAdmin(loginUser);
+
+        // 有効なユーザロールかチェック
+        UserRoleUtil.checkForValidRoleId(requestBody.getRoleId());
+
+        // 有効なパスワードかチェック
+        AuthUtil.validatePassword(requestBody.getPassword());
+
+        // ユーザを作成
+        final var user = this.modelMapper.map(requestBody, User.class);
+        user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
+        this.userRepository.insert(user);
     }
 
 }

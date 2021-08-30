@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import io.swagger.annotations.*;
 import lombok.*;
+import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.service.UserService;
 
@@ -43,6 +44,35 @@ public class UserRestController {
         @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials //
     ) {
         return this.userService.getUsers(credentials);
+    }
+
+    /**
+     * ユーザ作成API
+     *
+     * @param loginUser   ログインユーザ
+     *
+     * @param requestBody ユーザ作成リクエスト
+     */
+    @ApiOperation( //
+        value = "ユーザの作成", //
+        notes = "ユーザを作成する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 201, message = "作成成功"), //
+                @ApiResponse(code = 400, message = "無効なパスワード"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 403, message = "ユーザに権限がない"), //
+                @ApiResponse(code = 409, message = "ユーザが既に存在している"), //
+        } //
+    )
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createUser( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserCreateRequest requestBody //
+    ) {
+        this.userService.createUser(credentials, requestBody);;
     }
 
 }
