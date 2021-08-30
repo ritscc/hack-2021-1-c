@@ -11,6 +11,7 @@ import dev.abelab.timestamp.db.entity.User;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
 import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
+import dev.abelab.timestamp.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.repository.UserRepository;
@@ -158,4 +159,26 @@ public class UserService {
         loginUser.setLastName(requestBody.getLastName());
         this.userRepository.update(loginUser);
     }
+
+    /**
+     * ログインユーザのパスワードを更新
+     *
+     * @param credentials 資格情報
+     */
+    @Transactional
+    public void updateLoginPasswordUser(final String credentials, final LoginUserPasswordUpdateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // 現在のパスワードチェック
+        this.userLogic.verifyPassword(loginUser, requestBody.getCurrentPassword());
+
+        // 有効なパスワードかチェック
+        AuthUtil.validatePassword(requestBody.getNewPassword());
+
+        // ログインユーザのパスワードを更新
+        loginUser.setPassword(this.userLogic.encodePassword(requestBody.getNewPassword()));
+        this.userRepository.update(loginUser);
+    }
+
 }

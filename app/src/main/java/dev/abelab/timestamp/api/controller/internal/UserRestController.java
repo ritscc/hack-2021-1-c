@@ -11,6 +11,7 @@ import lombok.*;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
 import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
+import dev.abelab.timestamp.api.request.LoginUserPasswordUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.service.UserService;
@@ -186,6 +187,34 @@ public class UserRestController {
         @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final LoginUserUpdateRequest requestBody //
     ) {
         this.userService.updateLoginUser(credentials, requestBody);
+    }
+
+    /**
+     * ログインユーザのパスワード更新API
+     *
+     * @param credentials 資格情報
+     *
+     * @param requestBody ログインユーザのパスワード更新リクエスト
+     */
+    @ApiOperation( //
+        value = "ログインユーザのパスワード更新", //
+        notes = "ログインユーザのパスワードを更新する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "更新成功"), //
+                @ApiResponse(code = 400, message = "無効なパスワード"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+        } //
+    )
+    @PutMapping(value = "/me/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateLoginUserPassword( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @Validated @ApiParam(name = "body", required = true, value = "パスワード更新情報")
+        @RequestBody final LoginUserPasswordUpdateRequest requestBody //
+    ) {
+        this.userService.updateLoginPasswordUser(credentials, requestBody);
     }
 
 }
