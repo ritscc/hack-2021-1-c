@@ -41,7 +41,18 @@ public class StampRepository {
     }
 
     /**
-     * ユーザを削除
+     * スタンプを一括挿入
+     *
+     * @param stamps スタンプリスト
+     */
+    public void bulkInsert(List<Stamp> stamps) {
+        if (!stamps.isEmpty()) {
+            this.stampMapper.bulkInsert(stamps);
+        }
+    }
+
+    /**
+     * スタンプを削除
      *
      * @param stampId スタンプID
      */
