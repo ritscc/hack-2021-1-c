@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
+import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.service.UserService;
@@ -160,4 +161,31 @@ public class UserRestController {
     ) {
         return this.userService.getLoginUser(credentials);
     }
+
+    /**
+     * ログインユーザ更新API
+     *
+     * @param credentials 資格情報
+     *
+     * @param requestBody ログインユーザ更新リクエスト
+     */
+    @ApiOperation( //
+        value = "ログインユーザの更新", //
+        notes = "ログインユーザを更新する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "更新成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+        } //
+    )
+    @PutMapping(value = "/me")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateLoginUser( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final LoginUserUpdateRequest requestBody //
+    ) {
+        this.userService.updateLoginUser(credentials, requestBody);
+    }
+
 }

@@ -27,6 +27,7 @@ import dev.abelab.timestamp.enums.UserRoleEnum;
 import dev.abelab.timestamp.repository.UserRepository;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
+import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.exception.ErrorCode;
@@ -49,6 +50,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 	static final String GET_LOGIN_USER_PATH = BASE_PATH + "/me";
+	static final String UPDATE_LOGIN_USER_PATH = BASE_PATH + "/me";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -517,6 +519,62 @@ public class UserRestController_IT extends AbstractRestController_IT {
 		void 異_無効な認証ヘッダ() throws Exception {
 			// test
 			final var request = getRequest(GET_LOGIN_USER_PATH);
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * ログインユーザ更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateLoginUserTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_ログインユーザを更新(final UserRoleEnum userRole) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(userRole);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setEmail(user.getEmail() + "xxx");
+			user.setFirstName(user.getFirstName() + "xxx");
+			user.setLastName(user.getLastName() + "xxx");
+			final var requestBody = modelMapper.map(user, LoginUserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectByEmail(requestBody.getEmail());
+			assertThat(updatedUser) //
+				.extracting(User::getEmail, User::getFirstName, User::getLastName) //
+				.containsExactly(user.getEmail(), user.getFirstName(), user.getLastName());
+		}
+
+		Stream<Arguments> 正_ログインユーザを更新() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// setup
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			final var requestBody = modelMapper.map(user, LoginUserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(UPDATE_LOGIN_USER_PATH, requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}

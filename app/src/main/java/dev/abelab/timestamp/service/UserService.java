@@ -10,6 +10,7 @@ import lombok.*;
 import dev.abelab.timestamp.db.entity.User;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
+import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.repository.UserRepository;
@@ -141,4 +142,20 @@ public class UserService {
         return this.modelMapper.map(loginUser, UserResponse.class);
     }
 
+    /**
+     * ログインユーザを更新
+     *
+     * @param credentials 資格情報
+     */
+    @Transactional
+    public void updateLoginUser(final String credentials, final LoginUserUpdateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // ログインユーザを更新
+        loginUser.setEmail(requestBody.getEmail());
+        loginUser.setFirstName(requestBody.getFirstName());
+        loginUser.setLastName(requestBody.getLastName());
+        this.userRepository.update(loginUser);
+    }
 }
