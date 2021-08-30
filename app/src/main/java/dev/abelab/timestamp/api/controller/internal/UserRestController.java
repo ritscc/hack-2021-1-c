@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
+import dev.abelab.timestamp.api.request.UserUpdateRequest;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.service.UserService;
 
@@ -24,7 +25,7 @@ public class UserRestController {
     /**
      * ユーザ一覧取得API
      *
-     * @param loginUser ログインユーザ
+     * @param credentials 資格情報
      *
      * @return ユーザ一覧レスポンス
      */
@@ -49,7 +50,7 @@ public class UserRestController {
     /**
      * ユーザ作成API
      *
-     * @param loginUser   ログインユーザ
+     * @param credentials 資格情報
      *
      * @param requestBody ユーザ作成リクエスト
      */
@@ -73,6 +74,37 @@ public class UserRestController {
         @Validated @ApiParam(name = "body", required = true, value = "新規ユーザ情報") @RequestBody final UserCreateRequest requestBody //
     ) {
         this.userService.createUser(credentials, requestBody);;
+    }
+
+    /**
+     * ユーザ更新API
+     *
+     * @param credentials 資格情報
+     *
+     * @param userId      ユーザID
+     *
+     * @param requestBody ユーザ更新リクエスト
+     */
+    @ApiOperation( //
+        value = "ユーザの更新", //
+        notes = "ユーザを更新する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "更新成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 403, message = "ユーザに権限がない"), //
+                @ApiResponse(code = 404, message = "ユーザが存在しない"), //
+        } //
+    )
+    @PutMapping(value = "/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUser( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @ApiParam(name = "user_id", required = true, value = "ユーザID") @PathVariable("user_id") final int userId, //
+        @Validated @ApiParam(name = "body", required = true, value = "ユーザ更新情報") @RequestBody final UserUpdateRequest requestBody //
+    ) {
+        this.userService.updateUser(credentials, userId, requestBody);
     }
 
 }
