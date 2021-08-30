@@ -1,5 +1,8 @@
 # Time Stamp
 
+![build](https://github.com/ritscc/hack-2021-1-c/workflows/build/badge.svg)
+![test](https://github.com/ritscc/hack-2021-1-c/workflows/test/badge.svg)
+![deploy](https://github.com/ritscc/hack-2021-1-c/workflows/deploy/badge.svg)
 ![Version 1.0](https://img.shields.io/badge/version-1.0-yellow.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
