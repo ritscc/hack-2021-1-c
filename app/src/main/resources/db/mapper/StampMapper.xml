@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.abelab.timestamp.db.mapper.StampMapper">
     <resultMap id="BaseResultMap" type="dev.abelab.timestamp.db.entity.Stamp" extends="dev.abelab.timestamp.db.mapper.base.StampBaseMapper.BaseResultMap"></resultMap>
+    <resultMap id="BaseAttachmentResultMap" type="dev.abelab.timestamp.db.entity.StampAttachment" extends="dev.abelab.timestamp.db.mapper.base.StampAttachmentBaseMapper.BaseResultMap"></resultMap>
+
+    <resultMap id="StampWithAttachmentsResultMap" type="dev.abelab.timestamp.db.entity.join.StampWithAttachments" extends="BaseResultMap">
+        <collection property="attachments" ofType="dev.abelab.timestamp.db.entity.StampAttachment" resultMap="BaseAttachmentResultMap" columnPrefix="a_"></collection>
+    </resultMap>
 
     <insert id="bulkInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         insert into stamp(title, description, user_id) values
@@ -10,5 +15,20 @@
         </foreach>
 
     </insert>
+
+    <select id="selectAllWithAttachments" parameterType="java.lang.Integer" resultMap="StampWithAttachmentsResultMap">
+        select
+
+        s.*,
+
+        sa.id as a_id,
+        sa.stamp_id as a_stamp_id,
+        sa.uuid as a_uuid,
+        sa.created_at as a_created_at,
+        sa.updated_at as a_updated_at
+
+        from stamp s
+        left join stamp_attachment sa on s.id = sa.stamp_id
+    </select>
 
 </mapper>

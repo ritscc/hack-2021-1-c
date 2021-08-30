@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 import dev.abelab.timestamp.db.entity.Stamp;
 import dev.abelab.timestamp.db.entity.StampExample;
+import dev.abelab.timestamp.db.entity.join.StampWithAttachments;
 import dev.abelab.timestamp.db.mapper.StampMapper;
 import dev.abelab.timestamp.exception.ErrorCode;
 import dev.abelab.timestamp.exception.NotFoundException;
@@ -90,6 +91,15 @@ public class StampRepository {
         } catch (NotFoundException e) {
             return false;
         }
+    }
+
+    /**
+     * スタンプ（+添付ファイル一覧）一覧を取得
+     *
+     * @return スタンプ（+添付ファイル一覧）一覧を
+     */
+    public List<StampWithAttachments> selectAllWithAttachments() {
+        return this.stampMapper.selectAllWithAttachments();
     }
 
 }
