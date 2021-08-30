@@ -28,6 +28,12 @@
 		<table tableName="user_role">
 			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
 		</table>
+		<table tableName="stamp">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
+		</table>
+		<table tableName="stamp_attachment">
+			<generatedKey column="id" sqlStatement="JDBC" identity="true" />
+		</table>
 
 	</context>
 </generatorConfiguration>
