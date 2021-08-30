@@ -26,6 +26,7 @@ import dev.abelab.timestamp.db.entity.UserSample;
 import dev.abelab.timestamp.enums.UserRoleEnum;
 import dev.abelab.timestamp.repository.UserRepository;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
+import dev.abelab.timestamp.api.request.UserUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.exception.ErrorCode;
@@ -45,6 +46,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String BASE_PATH = "/api/users";
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
+	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -250,6 +252,168 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			final var request = postRequest(CREATE_USER_PATH, requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * ユーザ更新APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class UpdateUserTest extends AbstractRestControllerInitialization_IT {
+
+		@Test
+		void 正_管理者がユーザを更新() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setEmail(user.getEmail() + "xxx");
+			user.setFirstName(user.getFirstName() + "xxx");
+			user.setLastName(user.getLastName() + "xxx");
+			user.setRoleId(UserRoleEnum.MEMBER.getId());
+			final var requestBody = modelMapper.map(user, UserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectByEmail(user.getEmail());
+			assertThat(updatedUser) //
+				.extracting(User::getEmail, User::getFirstName, User::getLastName, User::getRoleId) //
+				.containsExactly( //
+					user.getFirstName(), user.getLastName(), user.getEmail(), user.getRoleId());
+		}
+
+		@Test
+		void 異_管理者以外はユーザを更新不可() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().roleId(UserRoleEnum.ADMIN.getId()).password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setEmail(user.getEmail() + "xxx");
+			user.setFirstName(user.getFirstName() + "xxx");
+			user.setLastName(user.getLastName() + "xxx");
+			user.setRoleId(UserRoleEnum.MEMBER.getId());
+			final var requestBody = modelMapper.map(user, UserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_ユーザロールを更新(final UserRoleEnum beforeUserRole, final UserRoleEnum afterUserRole) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().roleId(beforeUserRole.getId()).password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setRoleId(afterUserRole.getId());
+			final var requestBody = modelMapper.map(user, UserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var updatedUser = userRepository.selectByEmail(user.getEmail());
+			assertThat(updatedUser.getRoleId()).isEqualTo(afterUserRole.getId());
+		}
+
+		Stream<Arguments> 正_ユーザロールを更新() {
+			return Stream.of( //
+				// 管理者 -> メンバー
+				arguments(UserRoleEnum.ADMIN, UserRoleEnum.MEMBER), //
+				// メンバー -> 管理者
+				arguments(UserRoleEnum.MEMBER, UserRoleEnum.ADMIN) //
+			);
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 異_無効なユーザロール(final int roleId) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setRoleId(roleId);
+			final var requestBody = modelMapper.map(user, UserCreateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, user.getId()), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER_ROLE));
+		}
+
+		Stream<Arguments> 異_無効なユーザロール() {
+			return Stream.of( //
+				arguments(0), //
+				arguments(UserRoleEnum.values().length + 1) //
+			);
+		}
+
+		@Test
+		void 異_更新後のメールアドレスが既に存在する() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			user.setEmail(loginUser.getEmail());
+			final var requestBody = modelMapper.map(user, UserCreateRequest.class);
+
+			// test
+			final var request = postRequest(CREATE_USER_PATH, requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new ConflictException(ErrorCode.CONFLICT_EMAIL));
+		}
+
+		@Test
+		void 異_更新対象ユーザが存在しない() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			final var requestBody = modelMapper.map(user, UserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// setup
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			final var requestBody = modelMapper.map(user, UserUpdateRequest.class);
+
+			// test
+			final var request = putRequest(String.format(UPDATE_USER_PATH, SAMPLE_INT), requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+
 		}
 
 	}
