@@ -1,0 +1,61 @@
+spring:
+  datasource:
+    url:
+    username:
+    password:
+    driver:
+  flyway:
+    baselineOnMigrate: true
+    validateOnMigrate: false
+    outOfOrder: false
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver: ${spring.datasource.driver}
+    locations: classpath:db/migration
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  jackson:
+    dateFormat: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: Asia/Tokyo
+
+server:
+  port: 8080
+
+timestamp:
+  package: dev.abelab.timestamp
+  mybatis:
+    config:
+      file: generatorConfig.xml
+    model:
+      package: db.entity
+    client:
+      package: db.mapper.base
+      type: XMLMAPPER
+    map:
+      package: db.mapper.base
+  protocol: http
+  hostname: localhost:${server.port}
+  admin:
+    first-name: 健太朗
+    last-name: 阿部
+    email: admin@abelab.dev
+    password: FK2$XGYwrWfyNNxS
+    admission-year: 2019
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
+  mapperLocations:
+    - classpath:/db/mapper/base/*Mapper.xml
+    - classpath:/db/mapper/*Mapper.xml
+
+jwt:
+  secret: zdtlD3JK56m6wTTgsNFhqzjq
+  issuer: timestamp.abelab.dev
+  valid_hour: 168
+
+logging:
+  level:
+    root: INFO
