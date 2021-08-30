@@ -51,7 +51,7 @@ public enum ErrorCode {
      */
     USER_NOT_LOGGED_IN(1500, "exception.unauthorized.user_not_logged_in"),
 
-    WRONG_EMAIL_OR_PASSWORD(1501, "exception.unauthorized.wrong_email_or_password"),
+    WRONG_PASSWORD(1501, "exception.unauthorized.wrong_password"),
 
     INVALID_ACCESS_TOKEN(1502, "exception.unauthorized.invalid_access_token"),
 

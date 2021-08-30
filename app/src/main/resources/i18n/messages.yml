@@ -17,6 +17,6 @@ exception:
     invalid_expired_at: "Expired date is invalid."
   unauthorized:
     user_not_logged_in: "User has no logged in."
-    wrong_email_or_password: "Email or password is wrong."
+    wrong_password: "Password is wrong."
     invalid_access_token: "Access token is invalid."
     expired_access_token: "Access token is expired."
