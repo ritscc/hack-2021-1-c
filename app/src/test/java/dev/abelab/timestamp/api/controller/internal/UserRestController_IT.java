@@ -47,6 +47,7 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	static final String GET_USERS_PATH = BASE_PATH;
 	static final String CREATE_USER_PATH = BASE_PATH;
 	static final String UPDATE_USER_PATH = BASE_PATH + "/%d";
+	static final String DELETE_USER_PATH = BASE_PATH + "/%d";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -414,6 +415,65 @@ public class UserRestController_IT extends AbstractRestController_IT {
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 
+		}
+
+	}
+
+	/**
+	 * ユーザ削除APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class DeleteUserTest extends AbstractRestControllerInitialization_IT {
+
+		@Test
+		void 正_管理者がユーザを削除() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, user.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.OK);
+		}
+
+		@Test
+		void 異_管理者以外はユーザを削除不可() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var user = UserSample.builder().password(LOGIN_USER_PASSWORD).build();
+			userRepository.insert(user);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, user.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		}
+
+		@Test
+		void 異_削除対象ユーザが存在しない() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_USER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// test
+			final var request = deleteRequest(String.format(DELETE_USER_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}
 
 	}
