@@ -96,3 +96,9 @@ bin/
 
 ### Application property ###
 app/src/main/resources/application-prod.yml
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
