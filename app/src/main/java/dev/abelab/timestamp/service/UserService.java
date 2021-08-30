@@ -107,4 +107,23 @@ public class UserService {
         this.userRepository.update(user);
     }
 
+    /**
+     * ユーザを削除
+     *
+     * @param credentials 資格情報
+     *
+     * @param userId      ユーザID
+     */
+    @Transactional
+    public void deleteUser(final String credentials, final int userId) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // 管理者かチェック
+        AuthUtil.checkAdmin(loginUser);
+
+        // ユーザを削除
+        this.userRepository.deleteById(userId);
+    }
+
 }
