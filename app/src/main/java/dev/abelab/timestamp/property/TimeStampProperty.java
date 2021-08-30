@@ -48,11 +48,6 @@ public class TimeStampProperty {
          */
         String password;
 
-        /**
-         * Admin admission year
-         */
-        Integer admissionYear;
-
     }
 
 }
