@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import lombok.*;
 import dev.abelab.timestamp.db.entity.User;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
+import dev.abelab.timestamp.api.request.UserUpdateRequest;
 import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.repository.UserRepository;
@@ -75,6 +76,35 @@ public class UserService {
         final var user = this.modelMapper.map(requestBody, User.class);
         user.setPassword(this.userLogic.encodePassword(requestBody.getPassword()));
         this.userRepository.insert(user);
+    }
+
+    /**
+     * ユーザを更新
+     *
+     * @param credentials 資格情報
+     *
+     * @param userId      ユーザID
+     *
+     * @param requestBody ユーザ更新リクエスト
+     */
+    @Transactional
+    public void updateUser(final String credentials, final int userId, final UserUpdateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // 管理者かチェック
+        AuthUtil.checkAdmin(loginUser);
+
+        // 有効なユーザロールかチェック
+        UserRoleUtil.checkForValidRoleId(requestBody.getRoleId());
+
+        // ユーザを更新
+        final var user = this.userRepository.selectById(userId);
+        user.setFirstName(requestBody.getFirstName());
+        user.setLastName(requestBody.getLastName());
+        user.setEmail(requestBody.getEmail());
+        user.setRoleId(requestBody.getRoleId());
+        this.userRepository.update(user);
     }
 
 }
