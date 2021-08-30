@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.timestamp.api.request.UserCreateRequest;
 import dev.abelab.timestamp.api.request.UserUpdateRequest;
+import dev.abelab.timestamp.api.response.UserResponse;
 import dev.abelab.timestamp.api.response.UsersResponse;
 import dev.abelab.timestamp.service.UserService;
 
@@ -135,4 +136,28 @@ public class UserRestController {
         this.userService.deleteUser(credentials, userId);
     }
 
+    /**
+     * ログインユーザ詳細取得API
+     *
+     * @param credentials 資格情報
+     *
+     * @return ユーザ詳細レスポンス
+     */
+    @ApiOperation( //
+        value = "ログインユーザ詳細の取得", //
+        notes = "ログインユーザ詳細を取得する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "取得成功", response = UserResponse.class), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 404, message = "ユーザが存在しない") //
+        })
+    @GetMapping(value = "/me")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse getLoginUser( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials //
+    ) {
+        return this.userService.getLoginUser(credentials);
+    }
 }

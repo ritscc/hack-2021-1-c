@@ -126,4 +126,19 @@ public class UserService {
         this.userRepository.deleteById(userId);
     }
 
+    /**
+     * ログインユーザ詳細を取得
+     *
+     * @param credentials 資格情報
+     *
+     * @return ユーザ詳細レスポンス
+     */
+    @Transactional
+    public UserResponse getLoginUser(final String credentials) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        return this.modelMapper.map(loginUser, UserResponse.class);
+    }
+
 }
