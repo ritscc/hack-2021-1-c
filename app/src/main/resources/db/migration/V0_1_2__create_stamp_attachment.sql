@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `stamp_attachment` (
   `stamp_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `uuid` CHAR(36) NOT NULL,
-  `content` BLOB NOT NULL,
+  `content` LONGBLOB NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `fk_stamp_id_idx` (`stamp_id`),
