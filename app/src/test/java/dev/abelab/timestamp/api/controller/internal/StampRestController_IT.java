@@ -51,6 +51,7 @@ public class StampRestController_IT extends AbstractRestController_IT {
 	static final String GET_STAMPS_PATH = BASE_PATH;
 	static final String CREATE_STAMP_PATH = BASE_PATH;
 	static final String DELETE_STAMP_PATH = BASE_PATH + "/%d";
+	static final String GET_STAMP_ATTACHMENT_PATH = BASE_PATH + "/attachments/%d";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -284,6 +285,53 @@ public class StampRestController_IT extends AbstractRestController_IT {
 		void 異_無効な認証ヘッダ() throws Exception {
 			// test
 			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * 添付ファイルダウンロードAPIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class DownloadStampAttachmentTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_添付ファイルをダウンロード(final UserRoleEnum roleId) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(roleId);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var stamp = StampSample.builder().userId(loginUser.getId()).build();
+			stampRepository.insert(stamp);
+
+			final var stampAttachment = StampAttachmentSample.builder().stampId(stamp.getId()).build();
+			stampAttachmentRepository.insert(stampAttachment);
+
+			// test
+			final var request = getRequest(String.format(GET_STAMP_ATTACHMENT_PATH, stampAttachment.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			final var response = execute(request, HttpStatus.OK);
+
+			// verify
+			assertThat(response.getResponse().getContentLength()).isEqualTo(stampAttachment.getContent().length);
+		}
+
+		Stream<Arguments> 正_添付ファイルをダウンロード() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// test
+			final var request = getRequest(String.format(GET_STAMP_ATTACHMENT_PATH, SAMPLE_INT));
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}
