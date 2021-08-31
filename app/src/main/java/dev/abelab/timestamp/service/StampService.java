@@ -7,18 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 
 import lombok.*;
-import dev.abelab.timestamp.db.entity.User;
-import dev.abelab.timestamp.api.request.UserCreateRequest;
-import dev.abelab.timestamp.api.request.UserUpdateRequest;
-import dev.abelab.timestamp.api.request.LoginUserUpdateRequest;
-import dev.abelab.timestamp.api.request.LoginUserPasswordUpdateRequest;
+import dev.abelab.timestamp.db.entity.Stamp;
+import dev.abelab.timestamp.api.request.StampCreateRequest;
 import dev.abelab.timestamp.api.response.StampResponse;
 import dev.abelab.timestamp.api.response.StampsResponse;
-import dev.abelab.timestamp.model.StampAttachmentModel;
 import dev.abelab.timestamp.repository.StampRepository;
 import dev.abelab.timestamp.logic.UserLogic;
-import dev.abelab.timestamp.util.AuthUtil;
-import dev.abelab.timestamp.util.UserRoleUtil;
+import dev.abelab.timestamp.logic.StampLogic;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +24,8 @@ public class StampService {
     private final StampRepository stampRepository;
 
     private final UserLogic userLogic;
+
+    private final StampLogic stampLogic;
 
     /**
      * スタンプ一覧を取得
@@ -49,6 +46,27 @@ public class StampService {
             .collect(Collectors.toList());
 
         return new StampsResponse(stampResponses);
+    }
+
+    /**
+     * スタンプを作成
+     *
+     * @param credentials 資格情報
+     *
+     * @param requestBody スタンプ作成リクエスト
+     */
+    @Transactional
+    public void createStamp(final String credentials, final StampCreateRequest requestBody) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // スタンプを作成
+        final var stamp = this.modelMapper.map(requestBody, Stamp.class);
+        stamp.setUserId(loginUser.getId());
+        this.stampRepository.insert(stamp);
+
+        // 添付ファイルをアップロード
+        this.stampLogic.uploadAttachments(stamp.getId(), requestBody.getAttachments());
     }
 
 }

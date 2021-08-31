@@ -7,9 +7,10 @@ import lombok.*;
 /**
  * スタンプの添付ファイルの提出モデル
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class StampAttachmentSubmitModel {
 
     /**
