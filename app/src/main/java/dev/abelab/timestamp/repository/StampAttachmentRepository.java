@@ -23,7 +23,7 @@ public class StampAttachmentRepository {
     public List<StampAttachment> selectAll() {
         final var stampAttachmentExample = new StampAttachmentExample();
         stampAttachmentExample.setOrderByClause("updated_at desc");
-        return this.stampAttachmentMapper.selectByExample(stampAttachmentExample);
+        return this.stampAttachmentMapper.selectByExampleWithBLOBs(stampAttachmentExample);
     }
 
     /**
@@ -34,7 +34,7 @@ public class StampAttachmentRepository {
     public List<StampAttachment> selectByStampId(final int stampId) {
         final var stampAttachmentExample = new StampAttachmentExample();
         stampAttachmentExample.createCriteria().andStampIdEqualTo(stampId);
-        return this.stampAttachmentMapper.selectByExample(stampAttachmentExample);
+        return this.stampAttachmentMapper.selectByExampleWithBLOBs(stampAttachmentExample);
     }
 
     /**

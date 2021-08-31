@@ -5,9 +5,10 @@ import lombok.*;
 /**
  * ファイルのダウンロードモデル
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileDownloadModel {
 
     /**

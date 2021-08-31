@@ -18,6 +18,7 @@ public class StampAttachmentSample extends AbstractSample {
 		private Integer stampId = SAMPLE_INT;
 		private String name = SAMPLE_STR;
 		private String uuid = UUID.randomUUID().toString();
+		private byte[] content = SAMPLE_BYTE;
 		private Date createdAt = SAMPLE_DATE;
 		private Date updatedAt = SAMPLE_DATE;
 
@@ -41,6 +42,11 @@ public class StampAttachmentSample extends AbstractSample {
 			return this;
 		}
 
+		public StampAttachmentSampleBuilder content(byte[] content) {
+			this.content = content;
+			return this;
+		}
+
 		public StampAttachmentSampleBuilder createdAt(Date createdAt) {
 			this.createdAt = createdAt;
 			return this;
@@ -57,6 +63,7 @@ public class StampAttachmentSample extends AbstractSample {
 				.stampId(this.stampId) //
 				.name(this.name) //
 				.uuid(this.uuid) //
+				.content(this.content) //
 				.createdAt(this.createdAt) //
 				.updatedAt(this.updatedAt) //
 				.build();
