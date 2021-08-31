@@ -1,6 +1,7 @@
 package dev.abelab.timestamp.api.controller.internal;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
@@ -20,18 +21,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 
 import dev.abelab.timestamp.api.controller.AbstractRestController_IT;
+import dev.abelab.timestamp.db.entity.UserSample;
 import dev.abelab.timestamp.db.entity.Stamp;
 import dev.abelab.timestamp.db.entity.StampAttachment;
 import dev.abelab.timestamp.db.entity.StampSample;
 import dev.abelab.timestamp.db.entity.StampAttachmentSample;
 import dev.abelab.timestamp.model.StampAttachmentSubmitModel;
 import dev.abelab.timestamp.enums.UserRoleEnum;
+import dev.abelab.timestamp.repository.UserRepository;
 import dev.abelab.timestamp.repository.StampRepository;
 import dev.abelab.timestamp.repository.StampAttachmentRepository;
 import dev.abelab.timestamp.api.request.StampCreateRequest;
 import dev.abelab.timestamp.api.response.StampResponse;
 import dev.abelab.timestamp.api.response.StampsResponse;
 import dev.abelab.timestamp.exception.ErrorCode;
+import dev.abelab.timestamp.exception.BaseException;
+import dev.abelab.timestamp.exception.NotFoundException;
+import dev.abelab.timestamp.exception.ForbiddenException;
 import dev.abelab.timestamp.exception.UnauthorizedException;
 
 /**
@@ -43,9 +49,13 @@ public class StampRestController_IT extends AbstractRestController_IT {
 	static final String BASE_PATH = "/api/stamps";
 	static final String GET_STAMPS_PATH = BASE_PATH;
 	static final String CREATE_STAMP_PATH = BASE_PATH;
+	static final String DELETE_STAMP_PATH = BASE_PATH + "/%d";
 
 	@Autowired
 	ModelMapper modelMapper;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	StampRepository stampRepository;
@@ -62,9 +72,9 @@ public class StampRestController_IT extends AbstractRestController_IT {
 
 		@ParameterizedTest
 		@MethodSource
-		void 正_スタンプ一覧を取得(final UserRoleEnum userRole) throws Exception {
+		void 正_スタンプ一覧を取得(final UserRoleEnum roleId) throws Exception {
 			// login user
-			final var loginUser = createLoginUser(userRole);
+			final var loginUser = createLoginUser(roleId);
 			final var credentials = getLoginUserCredentials(loginUser);
 
 			final var stamps = Arrays.asList( //
@@ -122,9 +132,9 @@ public class StampRestController_IT extends AbstractRestController_IT {
 
 		@ParameterizedTest
 		@MethodSource
-		void 正_スタンプを作成(final UserRoleEnum userRole) throws Exception {
+		void 正_スタンプを作成(final UserRoleEnum roleId) throws Exception {
 			// login user
-			final var loginUser = createLoginUser(userRole);
+			final var loginUser = createLoginUser(roleId);
 			final var credentials = getLoginUserCredentials(loginUser);
 
 			final var stamp = StampSample.builder().userId(loginUser.getId()).build();
@@ -187,6 +197,95 @@ public class StampRestController_IT extends AbstractRestController_IT {
 
 			// test
 			final var request = postRequest(CREATE_STAMP_PATH, requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * スタンプ削除APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class DeleteStampTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_自分のスタンプを削除(final UserRoleEnum roleId) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(roleId);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var stamp = StampSample.builder().userId(loginUser.getId()).build();
+			stampRepository.insert(stamp);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, stamp.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.OK);
+
+			// verify
+			final var occurredException = assertThrows(NotFoundException.class, () -> stampRepository.selectById(stamp.getId()));
+			assertThat(occurredException.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_STAMP);
+
+		}
+
+		Stream<Arguments> 正_自分のスタンプを削除() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@ParameterizedTest
+		@MethodSource
+		void 他人のスタンプを削除(final UserRoleEnum roleId, final BaseException exception) throws Exception {
+			// setup
+			final var loginUser = createLoginUser(roleId);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var stampOwner = UserSample.builder().build();
+			userRepository.insert(stampOwner);
+
+			final var stamp = StampSample.builder().userId(stampOwner.getId()).build();
+			stampRepository.insert(stamp);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, stamp.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			if (exception == null) {
+				execute(request, HttpStatus.OK);
+			} else {
+				execute(request, exception);
+			}
+		}
+
+		Stream<Arguments> 他人のスタンプを削除() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN, null),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION)));
+		}
+
+		@Test
+		void 異_削除対象スタンプが存在しない() throws Exception {
+			// setup
+			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			// test
+			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, new NotFoundException(ErrorCode.NOT_FOUND_STAMP));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// test
+			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, SAMPLE_INT));
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}
