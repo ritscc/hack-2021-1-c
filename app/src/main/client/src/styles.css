@@ -1,0 +1,91 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+/* foreground colors */
+.crms-fg-white1 {
+  color: #ffffff;
+}
+
+.crms-fg-white2 {
+  color: #d0d0d0;
+}
+
+.crms-fg-black1 {
+  color: #333333;
+}
+
+.crms-fg-black2 {
+  color: #434343;
+}
+
+.crms-fg-gray1 {
+  color: #808080;
+}
+
+.crms-fg-red1 {
+  color: #ff0000;
+}
+
+/* background colors */
+.crms-bg-white1 {
+  background-color: #fafafa;
+}
+
+.crms-bg-navy1 {
+  background-color: #293642;
+}
+
+.crms-bg-blue1 {
+  background-color: #17a1b8;
+}
+
+.crms-bg-blue2 {
+  background-color: #0791a8;
+}
+
+.crms-bg-gray1 {
+  background-color: #777777;
+}
+
+.crms-bg-gray2 {
+  background-color: #dcdcdc;
+}
+
+/* form settings */
+.crms-form-width-50 {
+  width: 49%;
+}
+
+.crms-form-width-100 {
+  width: 100%;
+}
+
+.crms-form-ml-2 {
+  margin-left: 2%;
+}
+
+/* other settings */
+.crms-bottom-border {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.mat-snack-bar-container {
+  padding: 0 !important;
+  min-height: 50px !important;
+  max-width: 65vw !important;
+}
+
+.scroll-content {
+  height: calc(100vh - 46px - 80px - 50px - 25px - 20px);
+  overflow: auto;
+  overflow-y: scroll;
+}
+
+.cal-time-label-column {
+  font-size: 12px;
+}
