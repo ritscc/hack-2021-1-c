@@ -1,0 +1,35 @@
+.snack-bar {
+  padding: 6px 4px 6px 20px;
+}
+
+.success-snack-bar {
+  background-color: #ddffdd;
+}
+
+.success-snack-bar-badge {
+  color: #237f38;
+}
+
+.info-snack-bar {
+  background-color: #edf8fb;
+}
+
+.info-snack-bar-badge {
+  color: #4a6884;
+}
+
+.warn-snack-bar {
+  background-color: #fffceb;
+}
+
+.warn-snack-bar-badge {
+  color: #594300;
+}
+
+.error-snack-bar {
+  background-color: #fef4f6;
+}
+
+.error-snack-bar-badge {
+  color: #cf4538;
+}

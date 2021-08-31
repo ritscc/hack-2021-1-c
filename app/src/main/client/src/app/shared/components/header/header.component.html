@@ -1,0 +1,28 @@
+<div fxLayout="column" fxLayoutAlign="start" fxFlex="100vw">
+  <div fxLayout="row" fxLayoutAlign="start" fxFlex="46px">
+    <div
+      class="crms-bg-blue2"
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxFlex="230px"
+    >
+      <span class="title-text crms-fg-white1 crms-bg-blue2">TIME STAMP</span>
+    </div>
+
+    <div
+      class="crms-bg-white1 crms-bottom-border"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxFlex="calc(100vw-230px)"
+    >
+      <img src="assets/rcc-weblogo.png" class="rcc-image" fxFlexOffset="8px" />
+      <app-header-user-menu></app-header-user-menu>
+    </div>
+  </div>
+
+  <div class="crms-bottom-border main-content">
+    <app-sidenav>
+      <router-outlet></router-outlet>
+    </app-sidenav>
+  </div>
+</div>

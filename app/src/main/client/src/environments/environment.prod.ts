@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  API_PREFIX: 'https://api.abelab.dev/timestamp',
+  CREDENTIALS_KEY: 'Authorization',
 };
