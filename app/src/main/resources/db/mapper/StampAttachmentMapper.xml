@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.abelab.timestamp.db.mapper.StampAttachmentMapper">
+    <resultMap id="BaseResultMap" type="dev.abelab.timestamp.db.entity.StampAttachment" extends="dev.abelab.timestamp.db.mapper.base.StampAttachmentBaseMapper.BaseResultMap"></resultMap>
+
+    <insert id="bulkInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into stamp_attachment(stamp_id, name, uuid) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.stampId}, #{item.name}, #{item.uuid})
+        </foreach>
+
+    </insert>
+
+</mapper>

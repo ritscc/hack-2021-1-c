@@ -6,6 +6,8 @@ exception:
     api: "API does not exists."
     user: "User does not exists."
     user_role: "User role does not exists."
+    stamp: "Stamp does not exists."
+    stamp_attachment: "Stamp attachment does not exists."
   conflict:
     email: "Email already exists."
   forbidden:

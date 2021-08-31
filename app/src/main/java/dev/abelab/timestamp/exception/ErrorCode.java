@@ -25,6 +25,10 @@ public enum ErrorCode {
 
     NOT_FOUND_USER_ROLE(1102, "exception.not_found.user_role"),
 
+    NOT_FOUND_STAMP(1103, "exception.not_found.stamp"),
+
+    NOT_FOUND_STAMP_ATTACHMENT(1104, "exception.not_found.stamp_attachment"),
+
     /**
      * Conflict: 1200~1299
      */
