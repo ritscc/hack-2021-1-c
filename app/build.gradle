@@ -92,8 +92,10 @@ dependencies {
     implementation "com.slack.api:slack-api-client:1.8.1"
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
 
-    // model mapper
+    // util
     implementation "org.modelmapper:modelmapper:2.4.4"
+    implementation "org.apache.commons:commons-collections4:4.4"
+    implementation "commons-net:commons-net:3.6"
 }
 
 bootJar{

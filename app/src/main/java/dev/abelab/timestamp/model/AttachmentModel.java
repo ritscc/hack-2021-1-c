@@ -16,7 +16,12 @@ public class AttachmentModel {
      * UUID
      */
     @Builder.Default
-    UUID uuid = UUID.randomUUID();
+    String uuid = UUID.randomUUID().toString();
+
+    /**
+     * ファイル名
+     */
+    String name;
 
     /**
      * ファイルのバイナリ

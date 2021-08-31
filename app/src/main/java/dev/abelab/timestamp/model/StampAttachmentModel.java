@@ -26,9 +26,4 @@ public class StampAttachmentModel {
      */
     String name;
 
-    /**
-     * ファイルタイプ
-     */
-    String type;
-
 }

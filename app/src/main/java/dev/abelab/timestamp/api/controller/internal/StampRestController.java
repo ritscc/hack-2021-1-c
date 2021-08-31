@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import io.swagger.annotations.*;
 import lombok.*;
 import dev.abelab.timestamp.api.response.StampsResponse;
+import dev.abelab.timestamp.api.request.StampCreateRequest;
 import dev.abelab.timestamp.service.StampService;
 
 @Api(tags = "Stamp")
@@ -42,6 +43,31 @@ public class StampRestController {
         @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials //
     ) {
         return this.stampService.getStamps(credentials);
+    }
+
+    /**
+     * スタンプ作成API
+     *
+     * @param credentials 資格情報
+     *
+     * @param スタンプ作成リクエスト
+     */
+    @ApiOperation( //
+        value = "スタンプの作成", //
+        notes = "スタンプを作成する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 201, message = "作成成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない") //
+        })
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createStamp( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @Validated @ApiParam(name = "body", required = true, value = "新規スタンプ情報") @RequestBody final StampCreateRequest requestBody //
+    ) {
+        this.stampService.createStamp(credentials, requestBody);
     }
 
 }
