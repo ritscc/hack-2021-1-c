@@ -23,6 +23,7 @@
 
         sa.id as a_id,
         sa.stamp_id as a_stamp_id,
+        sa.name as a_name,
         sa.uuid as a_uuid,
         sa.created_at as a_created_at,
         sa.updated_at as a_updated_at

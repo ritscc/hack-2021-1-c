@@ -4,9 +4,9 @@
     <resultMap id="BaseResultMap" type="dev.abelab.timestamp.db.entity.StampAttachment" extends="dev.abelab.timestamp.db.mapper.base.StampAttachmentBaseMapper.BaseResultMap"></resultMap>
 
     <insert id="bulkInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into stamp_attachment(stamp_id, uuid) values
+        insert into stamp_attachment(stamp_id, name, uuid) values
         <foreach collection="list" item="item" separator=",">
-            (#{item.stampId}, #{item.uuid})
+            (#{item.stampId}, #{item.name}, #{item.uuid})
         </foreach>
 
     </insert>

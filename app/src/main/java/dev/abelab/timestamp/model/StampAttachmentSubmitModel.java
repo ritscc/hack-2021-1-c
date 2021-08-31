@@ -1,7 +1,5 @@
 package dev.abelab.timestamp.model;
 
-import java.util.UUID;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.*;
@@ -15,10 +13,10 @@ import lombok.*;
 public class StampAttachmentSubmitModel {
 
     /**
-     * UUID
+     * ファイル名
      */
     @NotNull
-    String uuid;
+    String name;
 
     /**
      * ファイル内容 (Base64)

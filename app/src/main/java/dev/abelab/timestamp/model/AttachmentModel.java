@@ -12,13 +12,13 @@ import lombok.*;
 @RequiredArgsConstructor
 public class AttachmentModel {
 
-    /*
+    /**
      * UUID
      */
     @Builder.Default
     UUID uuid = UUID.randomUUID();
 
-    /*
+    /**
      * ファイルのバイナリ
      */
     byte[] bytes;

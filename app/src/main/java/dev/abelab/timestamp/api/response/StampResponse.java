@@ -3,7 +3,7 @@ package dev.abelab.timestamp.api.response;
 import java.util.List;
 
 import lombok.*;
-import dev.abelab.timestamp.model.StampAttachmentSubmitModel;
+import dev.abelab.timestamp.model.StampAttachmentModel;
 
 /**
  * スタンプ情報レスポンス
@@ -37,6 +37,6 @@ public class StampResponse {
     /**
      * 添付ファイル一覧
      */
-    List<StampAttachmentSubmitModel> attachments;
+    List<StampAttachmentModel> attachments;
 
 }
