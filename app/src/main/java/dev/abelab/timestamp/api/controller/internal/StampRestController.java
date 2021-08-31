@@ -35,7 +35,7 @@ public class StampRestController {
     @ApiResponses( //
         value = { //
                 @ApiResponse(code = 200, message = "取得成功", response = StampsResponse.class), //
-                @ApiResponse(code = 401, message = "ユーザがログインしていない") //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
         })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -59,7 +59,7 @@ public class StampRestController {
     @ApiResponses( //
         value = { //
                 @ApiResponse(code = 201, message = "作成成功"), //
-                @ApiResponse(code = 401, message = "ユーザがログインしていない") //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
         })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +68,34 @@ public class StampRestController {
         @Validated @ApiParam(name = "body", required = true, value = "新規スタンプ情報") @RequestBody final StampCreateRequest requestBody //
     ) {
         this.stampService.createStamp(credentials, requestBody);
+    }
+
+    /**
+     * スタンプ削除API
+     *
+     * @param credentials 資格情報
+     *
+     * @param stampId     スタンプID
+     */
+    @ApiOperation( //
+        value = "スタンプの削除", //
+        notes = "スタンプを削除する。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "削除成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 403, message = "ユーザに権限がない"), //
+                @ApiResponse(code = 404, message = "スタンプが存在しない"), //
+        } //
+    )
+    @DeleteMapping(value = "/{stamp_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteStamp( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @ApiParam(name = "user_id", required = true, value = "スタンプID") @PathVariable("stamp_id") final int stampId //
+    ) {
+        this.stampService.deleteStamp(credentials, stampId);
     }
 
 }

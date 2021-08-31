@@ -69,4 +69,23 @@ public class StampService {
         this.stampLogic.uploadAttachments(stamp.getId(), requestBody.getAttachments());
     }
 
+    /**
+     * スタンプを削除
+     *
+     * @param credentials 資格情報
+     *
+     * @param stampId     スタンプID
+     */
+    @Transactional
+    public void deleteStamp(final String credentials, final int stampId) {
+        // ログインユーザを取得
+        final var loginUser = this.userLogic.getLoginUser(credentials);
+
+        // 削除権限があるかチェック
+        this.stampLogic.checkEditPermission(loginUser, stampId);
+
+        // スタンプを削除
+        this.stampRepository.deleteById(stampId);
+    }
+
 }
