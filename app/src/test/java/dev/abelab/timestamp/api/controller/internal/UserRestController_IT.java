@@ -70,10 +70,11 @@ public class UserRestController_IT extends AbstractRestController_IT {
 	@TestInstance(PER_CLASS)
 	class GetUsersTest extends AbstractRestControllerInitialization_IT {
 
-		@Test
-		void 正_管理者がユーザ一覧を取得() throws Exception {
+		@ParameterizedTest
+		@MethodSource
+		void 正_ユーザ一覧を取得(final UserRoleEnum roleId) throws Exception {
 			// setup
-			final var loginUser = createLoginUser(UserRoleEnum.ADMIN);
+			final var loginUser = createLoginUser(roleId);
 			final var credentials = getLoginUserCredentials(loginUser);
 
 			final var user1 = UserSample.builder().email("email1").build();
@@ -97,21 +98,13 @@ public class UserRestController_IT extends AbstractRestController_IT {
 					.collect(Collectors.toList()));
 		}
 
-		@Test
-		void 異_管理者以外はユーザ一覧を取得不可() throws Exception {
-			// setup
-			final var loginUser = createLoginUser(UserRoleEnum.MEMBER);
-			final var credentials = getLoginUserCredentials(loginUser);
-
-			final var user1 = UserSample.builder().email("email1").build();
-			final var user2 = UserSample.builder().email("email2").build();
-			userRepository.insert(user1);
-			userRepository.insert(user2);
-
-			// test
-			final var request = getRequest(GET_USERS_PATH);
-			request.header(HttpHeaders.AUTHORIZATION, credentials);
-			execute(request, new ForbiddenException(ErrorCode.USER_HAS_NO_PERMISSION));
+		Stream<Arguments> 正_ユーザ一覧を取得() {
+			return Stream.of( //
+				// 管理者
+				arguments(UserRoleEnum.ADMIN), //
+				// メンバー
+				arguments(UserRoleEnum.MEMBER) //
+			);
 		}
 
 		@Test

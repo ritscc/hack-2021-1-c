@@ -39,10 +39,7 @@ public class UserService {
     @Transactional
     public UsersResponse getUsers(final String credentials) {
         // ログインユーザを取得
-        final var loginUser = this.userLogic.getLoginUser(credentials);
-
-        // 管理者かチェック
-        AuthUtil.checkAdmin(loginUser);
+        this.userLogic.getLoginUser(credentials);
 
         // ユーザ一覧の取得
         final var users = this.userRepository.selectAll();
