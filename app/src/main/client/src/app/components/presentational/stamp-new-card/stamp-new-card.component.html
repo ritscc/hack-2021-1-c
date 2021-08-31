@@ -20,6 +20,26 @@
       </mat-form-field>
 
       <button
+        mat-raised-button
+        class="crms-form-width-100"
+        color="primary"
+        type="button"
+        (click)="fileInput.click()"
+      >
+        <input
+          hidden
+          type="file"
+          accept="image/*"
+					multiple
+          #fileInput
+          (click)="onClickFileSelectButton($event)"
+          (change)="onSelectFiles($event)"
+        />
+        <mat-icon>file_upload</mat-icon>
+        <span>添付ファイルを追加</span>
+      </button>
+
+      <button
         type="button"
         mat-raised-button
         class="crms-form-width-100 crms-fg-black1 crms-bg-gray2 goback-button"

@@ -25,7 +25,6 @@ export class StampService {
   }
 
   public static downloadStamp(attachmentId: number) {
-    // FIXME: ヘッダーからファイル情報を取り出して
     return HttpBaseService.getRequest(
       `${environment.API_BASE_URI}/api/stamps/attachments/${attachmentId}`
     );

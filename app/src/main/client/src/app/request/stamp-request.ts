@@ -2,7 +2,7 @@
 export interface StampCreateRequest {
   title: string;
   description: string;
-  attachments: AttachmentRequestModel[] | never[];
+  attachments: AttachmentRequestModel[];
 }
 
 interface AttachmentRequestModel {
