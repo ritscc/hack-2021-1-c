@@ -30,7 +30,7 @@
           hidden
           type="file"
           accept="image/*"
-					multiple
+          multiple
           #fileInput
           (click)="onClickFileSelectButton($event)"
           (change)="onSelectFiles($event)"
@@ -38,6 +38,13 @@
         <mat-icon>file_upload</mat-icon>
         <span>添付ファイルを追加</span>
       </button>
+
+      <div class="attachments" *ngFor="let attachment of requestBody.attachments">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon>attach_file</mat-icon>
+          <span>{{ attachment.name }}</span>
+        </div>
+      </div>
 
       <button
         type="button"
