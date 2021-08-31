@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.abelab.timestamp.db.mapper.StampMapper">
-    <resultMap id="BaseResultMap" type="dev.abelab.timestamp.db.entity.Stamp" extends="dev.abelab.timestamp.db.mapper.base.StampBaseMapper.BaseResultMap"></resultMap>
+    <resultMap id="BaseResultMap" type="dev.abelab.timestamp.db.entity.Stamp" extends="dev.abelab.timestamp.db.mapper.base.StampBaseMapper.ResultMapWithBLOBs"></resultMap>
     <resultMap id="BaseAttachmentResultMap" type="dev.abelab.timestamp.db.entity.StampAttachment" extends="dev.abelab.timestamp.db.mapper.base.StampAttachmentBaseMapper.BaseResultMap"></resultMap>
 
     <resultMap id="StampWithAttachmentsResultMap" type="dev.abelab.timestamp.db.entity.join.StampWithAttachments" extends="BaseResultMap">

@@ -27,7 +27,7 @@ public class StampRepository {
     public List<Stamp> selectAll() {
         final var stampExample = new StampExample();
         stampExample.setOrderByClause("updated_at desc");
-        return this.stampMapper.selectByExample(stampExample);
+        return this.stampMapper.selectByExampleWithBLOBs(stampExample);
     }
 
     /**

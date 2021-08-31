@@ -5,9 +5,10 @@ import lombok.*;
 /**
  * スタンプ添付ファイルモデル
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class StampAttachmentModel {
 
     /**
