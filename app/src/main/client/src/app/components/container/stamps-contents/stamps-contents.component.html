@@ -1,1 +1,10 @@
-<p>stamps-contents works!</p>
+<div
+  class="stamps-content"
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="10px"
+>
+  <div *ngFor="let stamp of stamps">
+    <app-stamp-card [stamp]="stamp" fxFlexOffset="10px"></app-stamp-card>
+  </div>
+</div>

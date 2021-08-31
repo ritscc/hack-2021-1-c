@@ -1,3 +1,5 @@
+import { UserModel } from 'src/app/model/user-model';
+
 // スタンプモデル
 export interface StampModel {
   id: number;
@@ -5,6 +7,11 @@ export interface StampModel {
   description: string;
   userId: number;
   attachments: StampAttachmentModel[];
+}
+
+// スタンプ(+ユーザ)モデル
+export interface StampWithUserModel extends StampModel {
+  user: UserModel;
 }
 
 // スタンプ一覧モデル

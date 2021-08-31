@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { StampModel } from 'src/app/model/stamp-model';
+import { StampModel, StampWithUserModel } from 'src/app/model/stamp-model';
+import { UserService } from 'src/app/shared/services/user.service';
 import { StampService } from 'src/app/shared/services/stamp.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
@@ -12,23 +13,36 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class StampsContentsComponent implements OnInit {
   @Output() stampNewTransit: EventEmitter<any> = new EventEmitter();
 
-  stamps!: StampModel[];
+  stamps: StampWithUserModel[] = [];
 
   constructor(
+    private userService: UserService,
     private stampService: StampService,
     private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
     // スタンプ一覧を取得
-    this.stampService.getStamps().subscribe(
-      (stamps: StampModel[]) => {
-        this.stamps = stamps;
-      },
-      (error) => {
-        this.alertService.openSnackBar(error, 'ERROR');
-      }
-    );
+    this.userService.getUsers().subscribe((_) => {
+      this.stampService.getStamps().subscribe(
+        (stamps: StampModel[]) => {
+          stamps.forEach((stamp) => {
+            const user = this.userService.selectById(stamp.userId);
+            if (user === undefined) {
+              return;
+            }
+
+            let stampWithUser: StampWithUserModel = stamp as StampWithUserModel;
+            stampWithUser.user = user;
+            this.stamps.push(stampWithUser);
+          });
+          console.log(this.stamps);
+        },
+        (error) => {
+          this.alertService.openSnackBar(error, 'ERROR');
+        }
+      );
+    });
   }
 
   onClickCreateButton(): void {
