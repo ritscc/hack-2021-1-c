@@ -169,6 +169,7 @@ public class StampRestController_IT extends AbstractRestController_IT {
 				.containsExactlyInAnyOrderElementsOf(stampAttachments.stream() //
 					.map(attachment -> tuple(createdStamp.getId(), attachment.getName(), attachment.getContent())) //
 					.collect(Collectors.toList()));
+			assertThat(createdStamp.getCreatedAt()).isInSameMinuteAs(stamp.getCreatedAt());
 		}
 
 		Stream<Arguments> 正_スタンプを作成() {

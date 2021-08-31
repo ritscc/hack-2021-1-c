@@ -1,5 +1,6 @@
 package dev.abelab.timestamp.api.response;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.*;
@@ -33,6 +34,11 @@ public class StampResponse {
      * ユーザID
      */
     Integer userId;
+
+    /**
+     * 投稿日
+     */
+    Date createdAt;
 
     /**
      * 添付ファイル一覧
