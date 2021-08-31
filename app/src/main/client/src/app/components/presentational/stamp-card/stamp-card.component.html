@@ -1,14 +1,17 @@
-<mat-card class="stamp-card mat-elevation-z1">
+<mat-card class="stamp-card mat-elevation-z3">
   <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <mat-card-content fxLayout="column" fxLayoutAlign="start">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <span class="stamp-title crms-fg-black2">{{ stamp.title }}</span>
-        <span class="stamp-date-text crms-fg-black2">{{
-          stamp.createdAt.toLocaleString().split('T')[0]
-        }}</span>
-        <button mat-icon-button class="crms-fg-black2" (click)="onDelete()">
-          <mat-icon>delete</mat-icon>
-        </button>
+
+        <div class="stamp-buttons">
+          <button mat-icon-button class="crms-fg-black2">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button class="crms-fg-black2" (click)="onDelete()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
 
       <div class="stamp-image-area" fxLayout="row" fxLayoutAlign="start start" fxFlexOffset="20px">
@@ -24,9 +27,12 @@
         {{ stamp.description }}
       </div>
 
-      <div class="stamp-author crms-fg-black2" fxFlexOffset="5px">
+      <span class="stamp-author crms-fg-black2" fxFlexOffset="5px">
         投稿者： {{ stamp.user.lastName + ' ' + stamp.user.firstName }}
-      </div>
+      </span>
+      <span class="stamp-date-text crms-fg-black2">{{
+        stamp.createdAt.toLocaleString().split('T')[0]
+      }}</span>
     </mat-card-content>
   </div>
 </mat-card>

@@ -6,12 +6,17 @@ mat-card {
   font-size: 20px;
 }
 
+.stamp-buttons {
+  margin-left: auto;
+}
+
 .stamp-date-text {
   margin-left: auto;
-  font-size: 14px;
+  font-size: 10px;
 }
 
 .stamp-description {
+  padding: 0px 10px 0px 10px;
   height: 50px;
   overflow-y: scroll;
 }

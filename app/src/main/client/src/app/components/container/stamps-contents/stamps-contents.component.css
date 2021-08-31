@@ -10,7 +10,7 @@
   height: 50px;
   width: 170px;
   margin-left: auto;
-  z-index: 1;
+  z-index: 2;
 }
 
 app-stamp-card {
