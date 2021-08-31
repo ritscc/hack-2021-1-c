@@ -20,11 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
 
 import dev.abelab.timestamp.api.controller.AbstractRestController_IT;
+import dev.abelab.timestamp.db.entity.Stamp;
+import dev.abelab.timestamp.db.entity.StampAttachment;
 import dev.abelab.timestamp.db.entity.StampSample;
 import dev.abelab.timestamp.db.entity.StampAttachmentSample;
+import dev.abelab.timestamp.model.StampAttachmentSubmitModel;
 import dev.abelab.timestamp.enums.UserRoleEnum;
 import dev.abelab.timestamp.repository.StampRepository;
 import dev.abelab.timestamp.repository.StampAttachmentRepository;
+import dev.abelab.timestamp.api.request.StampCreateRequest;
 import dev.abelab.timestamp.api.response.StampResponse;
 import dev.abelab.timestamp.api.response.StampsResponse;
 import dev.abelab.timestamp.exception.ErrorCode;
@@ -38,6 +42,7 @@ public class StampRestController_IT extends AbstractRestController_IT {
 	// API PATH
 	static final String BASE_PATH = "/api/stamps";
 	static final String GET_STAMPS_PATH = BASE_PATH;
+	static final String CREATE_STAMP_PATH = BASE_PATH;
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -102,6 +107,86 @@ public class StampRestController_IT extends AbstractRestController_IT {
 		void 異_無効な認証ヘッダ() throws Exception {
 			// test
 			final var request = getRequest(GET_STAMPS_PATH);
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * スタンプ作成APIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class CreateStampTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_スタンプを作成(final UserRoleEnum userRole) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(userRole);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var stamp = StampSample.builder().userId(loginUser.getId()).build();
+			final var stampAttachments = Arrays.asList( //
+				StampAttachmentSample.builder().build(), //
+				StampAttachmentSample.builder().build(), //
+				StampAttachmentSample.builder().build() //
+			);
+
+			final var requestBody = modelMapper.map(stamp, StampCreateRequest.class);
+			requestBody.setAttachments(stampAttachments.stream() //
+				.map(attachment -> {
+					final var attachmentSubmitmodel = modelMapper.map(attachment, StampAttachmentSubmitModel.class);
+					attachmentSubmitmodel.setContent(SAMPLE_STR);
+					return attachmentSubmitmodel;
+				}).collect(Collectors.toList()));
+
+			// test
+			final var request = postRequest(CREATE_STAMP_PATH, requestBody);
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			execute(request, HttpStatus.CREATED, StampsResponse.class);
+
+			// verify
+			final var createdStamp = stampRepository.selectAllWithAttachments().get(0);
+			assertThat(createdStamp) //
+				.extracting(Stamp::getTitle, Stamp::getDescription, Stamp::getUserId) //
+				.containsExactly(stamp.getTitle(), stamp.getDescription(), loginUser.getId());
+			assertThat(createdStamp.getAttachments()) //
+				.extracting(StampAttachment::getStampId, StampAttachment::getName) //
+				.containsExactlyInAnyOrderElementsOf(stampAttachments.stream() //
+					.map(attachment -> tuple(createdStamp.getId(), attachment.getName())) //
+					.collect(Collectors.toList()));
+		}
+
+		Stream<Arguments> 正_スタンプを作成() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// setup
+			final var stamp = StampSample.builder().build();
+			final var stampAttachments = Arrays.asList( //
+				StampAttachmentSample.builder().build(), //
+				StampAttachmentSample.builder().build(), //
+				StampAttachmentSample.builder().build() //
+			);
+
+			final var requestBody = modelMapper.map(stamp, StampCreateRequest.class);
+			requestBody.setAttachments(stampAttachments.stream() //
+				.map(attachment -> {
+					final var attachmentSubmitmodel = modelMapper.map(attachment, StampAttachmentSubmitModel.class);
+					attachmentSubmitmodel.setContent(SAMPLE_STR);
+					return attachmentSubmitmodel;
+				}).collect(Collectors.toList()));
+
+			// test
+			final var request = postRequest(CREATE_STAMP_PATH, requestBody);
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}
