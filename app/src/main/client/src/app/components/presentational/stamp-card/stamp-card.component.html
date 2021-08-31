@@ -15,12 +15,9 @@
       </div>
 
       <div class="stamp-image-area" fxLayout="row" fxLayoutAlign="start start" fxFlexOffset="20px">
-        <img
-          class="stamp-image"
-          src="https://www.hsnove.co.jp/wp-content/uploads/2020/11/sea-ocean_00003.jpg"
-        />
-        <img class="stamp-image" src="https://unsplash.it/180/120" />
-        <img class="stamp-image" src="https://pro-foto.jp/img/category_tn_33.jpg" />
+        <div *ngFor="let imageSrc of images">
+          <img [src]="imageSrc" class="stamp-image" />
+        </div>
       </div>
 
       <div class="stamp-description crms-fg-black2" fxFlexOffset="20px">
