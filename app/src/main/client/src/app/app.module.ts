@@ -33,6 +33,7 @@ import { StampCardComponent } from './components/presentational/stamp-card/stamp
 import { StampsNewComponent } from './components/page/stamps/stamps-new/stamps-new.component';
 import { StampsNewFormComponent } from './components/container/stamps-new-form/stamps-new-form.component';
 import { StampNewCardComponent } from './components/presentational/stamp-new-card/stamp-new-card.component';
+import { SlideshowComponent } from './components/page/slideshow/slideshow.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { StampNewCardComponent } from './components/presentational/stamp-new-car
     StampsNewComponent,
     StampsNewFormComponent,
     StampNewCardComponent,
+    SlideshowComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],

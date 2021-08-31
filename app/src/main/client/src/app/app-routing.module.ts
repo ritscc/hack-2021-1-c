@@ -14,6 +14,8 @@ import { UsersEditComponent } from './components/page/admin/users-edit/users-edi
 // stamps
 import { StampsComponent } from './components/page/stamps/stamps.component';
 import { StampsNewComponent } from './components/page/stamps/stamps-new/stamps-new.component';
+// slideshow
+import { SlideshowComponent } from './components/page/slideshow/slideshow.component';
 // mypage
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
@@ -46,6 +48,10 @@ const routes: Routes = [
       {
         path: 'stamps/new',
         component: StampsNewComponent,
+      },
+      {
+        path: 'slideshow',
+        component: SlideshowComponent,
       },
       {
         path: 'mypage',
