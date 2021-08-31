@@ -30,6 +30,9 @@ import { MypagePasswordEditFormComponent } from './components/container/mypage-p
 import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
 import { StampsContentsComponent } from './components/container/stamps-contents/stamps-contents.component';
 import { StampCardComponent } from './components/presentational/stamp-card/stamp-card.component';
+import { StampsNewComponent } from './components/page/stamps/stamps-new/stamps-new.component';
+import { StampsNewFormComponent } from './components/container/stamps-new-form/stamps-new-form.component';
+import { StampNewCardComponent } from './components/presentational/stamp-new-card/stamp-new-card.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +60,9 @@ import { StampCardComponent } from './components/presentational/stamp-card/stamp
     MypageProfileEditFormComponent,
     StampsContentsComponent,
     StampCardComponent,
+    StampsNewComponent,
+    StampsNewFormComponent,
+    StampNewCardComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { StampWithUserModel } from 'src/app/model/stamp-model';
+import { StampModel, StampWithUserModel } from 'src/app/model/stamp-model';
 
 @Component({
   selector: 'app-stamp-card',
@@ -10,7 +10,13 @@ import { StampWithUserModel } from 'src/app/model/stamp-model';
 export class StampCardComponent implements OnInit {
   @Input() stamp!: StampWithUserModel;
 
+  @Output() deleteStamp: EventEmitter<StampModel> = new EventEmitter<StampModel>();
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  onDelete(): void {
+    this.deleteStamp.emit(this.stamp);
+  }
 }
