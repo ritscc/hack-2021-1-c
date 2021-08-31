@@ -26,6 +26,7 @@ export class StampsContentsComponent implements OnInit {
     this.userService.getUsers().subscribe((_) => {
       this.stampService.getStamps().subscribe(
         (stamps: StampModel[]) => {
+					this.stamps = [];
           stamps.forEach((stamp) => {
             const user = this.userService.selectById(stamp.userId);
             if (user === undefined) {
@@ -36,7 +37,6 @@ export class StampsContentsComponent implements OnInit {
             stampWithUser.user = user;
             this.stamps.push(stampWithUser);
           });
-          console.log(this.stamps);
         },
         (error) => {
           this.alertService.openSnackBar(error, 'ERROR');
