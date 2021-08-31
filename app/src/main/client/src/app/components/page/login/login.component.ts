@@ -12,6 +12,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   handleLoginTransit(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/stamps']);
   }
 }

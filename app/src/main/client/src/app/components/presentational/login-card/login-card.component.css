@@ -11,3 +11,9 @@ mat-form-field {
 mat-card-header {
   justify-content: center;
 }
+
+.timestamp-image {
+  width: 200px;
+  height: auto;
+  pointer-events: none;
+}

@@ -1,0 +1,31 @@
+mat-card {
+  width: 400px;
+}
+
+.stamp-title {
+  font-size: 20px;
+}
+
+.stamp-date-text {
+  margin-bottom: 3px;
+  font-size: 14px;
+}
+
+.stamp-description {
+  height: 50px;
+  overflow-y: scroll;
+}
+
+.stamp-image-area {
+  max-width: 400px;
+  overflow-x: scroll;
+}
+
+.stamp-image {
+  height: 150px;
+}
+
+.stamp-author {
+  font-size: 10px;
+  margin-left: auto;
+}
