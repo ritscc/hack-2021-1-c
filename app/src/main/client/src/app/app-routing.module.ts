@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/page/dashboard/dashboard.compon
 // admin
 import { AdminComponent } from './components/page/admin/admin.component';
 import { UsersComponent } from './components/page/admin/users/users.component';
+import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
 // others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -34,7 +35,13 @@ const routes: Routes = [
         path: 'admin',
         component: AdminComponent,
         canActivate: [AdminGuard],
-        children: [{ path: 'users', component: UsersComponent }],
+        children: [
+          { path: 'users', component: UsersComponent },
+          {
+            path: 'users/new',
+            component: UsersNewComponent,
+          },
+        ],
       },
     ],
   },

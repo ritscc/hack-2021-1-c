@@ -17,9 +17,27 @@ import { AdminComponent } from './components/page/admin/admin.component';
 import { UsersComponent } from './components/page/admin/users/users.component';
 import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
 import { UsersTableComponent } from './components/presentational/users-table/users-table.component';
+import { UserEditCardComponent } from './components/presentational/user-edit-card/user-edit-card.component';
+import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
+import { UsersNewFormComponent } from './components/container/users-new-form/users-new-form.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TitleBoxComponent, ErrorPageComponent, LoginComponent, LoginFormComponent, LoginCardComponent, AdminComponent, UsersComponent, UsersContentsComponent, UsersTableComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    TitleBoxComponent,
+    ErrorPageComponent,
+    LoginComponent,
+    LoginFormComponent,
+    LoginCardComponent,
+    AdminComponent,
+    UsersComponent,
+    UsersContentsComponent,
+    UsersTableComponent,
+    UserEditCardComponent,
+    UsersNewComponent,
+    UsersNewFormComponent,
+  ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],

@@ -7,6 +7,8 @@ export interface UserModel {
   password: string;
   firstName: string;
   lastName: string;
+  currentPassword: string;
+  newPassword: string;
   roleId: UserRoleEnum;
 }
 
