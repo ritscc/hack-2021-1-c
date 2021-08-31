@@ -1,0 +1,42 @@
+<mat-grid-list cols="1" rowHeight="600px">
+  <mat-grid-tile>
+    <form (ngSubmit)="onSubmit()" class="stamp-create-form" #userEditForm="ngForm">
+      <mat-form-field appearance="fill" class="crms-form-width-100">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="stamp.title" name="title" required />
+        <mat-error>タイトルを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="crms-form-width-100">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="stamp.description"
+          name="description"
+          rows="4"
+          required
+        ></textarea>
+        <mat-error>説明文を入力してください</mat-error>
+      </mat-form-field>
+
+      <button
+        type="button"
+        mat-raised-button
+        class="crms-form-width-100 crms-fg-black1 crms-bg-gray2 goback-button"
+        (click)="onGoBack()"
+      >
+        保存せずに戻る
+      </button>
+
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="userEditForm.invalid"
+        class="crms-form-width-100 crms-fg-white1 submit-button"
+      >
+        編集内容を保存する
+      </button>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>

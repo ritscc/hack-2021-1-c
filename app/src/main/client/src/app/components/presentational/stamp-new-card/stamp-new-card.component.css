@@ -1,0 +1,13 @@
+form {
+  width: 700px;
+}
+
+.goback-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 50px;
+}
+
+.submit-button {
+  height: 50px;
+}

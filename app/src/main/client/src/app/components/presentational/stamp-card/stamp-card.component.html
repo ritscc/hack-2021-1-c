@@ -1,11 +1,14 @@
 <mat-card class="stamp-card mat-elevation-z1">
   <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <mat-card-content fxLayout="column" fxLayoutAlign="start">
-      <div fxLayout="row" fxLayoutAlign="space-between end">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
         <span class="stamp-title crms-fg-black2">{{ stamp.title }}</span>
         <span class="stamp-date-text crms-fg-black2">{{
           stamp.createdAt.toLocaleString().split('T')[0]
         }}</span>
+        <button mat-icon-button class="crms-fg-black2" (click)="onDelete()">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
 
       <div class="stamp-image-area" fxLayout="row" fxLayoutAlign="start start" fxFlexOffset="20px">

@@ -7,6 +7,7 @@
         mat-raised-button
         class="mat-elevation-z3 new-stamp-button crms-fg-white1"
         color="primary"
+        (click)="onClickCreateButton()"
       >
         <mat-icon>add</mat-icon>
         <span>スタンプ新規作成</span>
@@ -15,7 +16,7 @@
 
     <div class="scroll-content" fxLayout="row wrap" fxLayoutAlign="start wrap" fxLayoutGap="10px">
       <div *ngFor="let stamp of stamps">
-        <app-stamp-card [stamp]="stamp"></app-stamp-card>
+        <app-stamp-card [stamp]="stamp" (deleteStamp)="handleDeleteStamp($event)"></app-stamp-card>
       </div>
     </div>
   </div>

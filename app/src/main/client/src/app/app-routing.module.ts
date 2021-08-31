@@ -13,6 +13,8 @@ import { UsersNewComponent } from './components/page/admin/users-new/users-new.c
 import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
 // stamps
 import { StampsComponent } from './components/page/stamps/stamps.component';
+import { StampsNewComponent } from './components/page/stamps/stamps-new/stamps-new.component';
+// mypage
 import { MypageComponent } from './components/page/mypage/mypage.component';
 import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
 import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
@@ -32,7 +34,7 @@ const routes: Routes = [
     component: HeaderComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: DashboardComponent },
+      { path: '', component: StampsComponent },
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -40,6 +42,10 @@ const routes: Routes = [
       {
         path: 'stamps',
         component: StampsComponent,
+      },
+      {
+        path: 'stamps/new',
+        component: StampsNewComponent,
       },
       {
         path: 'mypage',

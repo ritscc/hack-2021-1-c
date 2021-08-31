@@ -2,8 +2,10 @@
 export interface StampCreateRequest {
   title: string;
   description: string;
-  attachments: {
-    name: string;
-    content: string;
-  };
+  attachments: AttachmentRequestModel[] | never[];
+}
+
+interface AttachmentRequestModel {
+  name: string;
+  content: string;
 }
