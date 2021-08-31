@@ -1,0 +1,31 @@
+<div
+  class="snack-bar crms-fg-black2"
+  [class.success-snack-bar]="data.level === 'SUCCESS'"
+  [class.info-snack-bar]="data.level === 'INFO'"
+  [class.warn-snack-bar]="data.level === 'WARN'"
+  [class.error-snack-bar]="data.level === 'ERROR'"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px">
+    <mat-icon *ngIf="data.level === 'SUCCESS'" class="success-snack-bar-badge"
+      >check_circle</mat-icon
+    >
+    <mat-icon *ngIf="data.level === 'INFO'" class="info-snack-bar-badge"
+      >info</mat-icon
+    >
+    <mat-icon *ngIf="data.level === 'WARN'" class="warn-snack-bar-badge"
+      >warning</mat-icon
+    >
+    <mat-icon *ngIf="data.level === 'ERROR'" class="error-snack-bar-badge"
+      >error</mat-icon
+    >
+    <span>{{ data.message }}</span>
+  </div>
+
+  <span class="snack-bar-close-button">
+    <button mat-icon-button (click)="dismiss()">
+      <mat-icon class="crms-fg-black2">close</mat-icon>
+    </button>
+  </span>
+</div>

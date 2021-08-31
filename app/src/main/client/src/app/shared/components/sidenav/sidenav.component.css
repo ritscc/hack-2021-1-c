@@ -1,0 +1,11 @@
+.sidenav-container {
+  min-height: calc(100vh - 46px);
+}
+
+.side-menu {
+  width: 230px;
+}
+
+.column-text {
+  margin-left: 5%;
+}

@@ -1,0 +1,17 @@
+<app-user-edit-card
+  [user]="user"
+  [enableName]="true"
+  [enableEmail]="true"
+  [enablePassword]="false"
+  [enableCurrentPassword]="false"
+  [enableNewPassword]="false"
+  [enableRoleId]="true"
+  [allowNameInput]="true"
+  [allowEmailInput]="true"
+  [allowPasswordInput]="false"
+  [allowCurrentPasswordInput]="false"
+  [allowNewPasswordInput]="false"
+  [allowRoleIdInput]="true"
+  (goBackTransit)="handleGoBack()"
+  (submitUser)="handleSubmitUser($event)"
+></app-user-edit-card>

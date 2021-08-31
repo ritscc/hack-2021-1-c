@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+  <h2 mat-dialog-title class="crms-fg-black2">{{ data.title }}</h2>
+  <mat-dialog-content class="crms-fg-black2">{{ data.message }}</mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="onOkClick()">OK</button>
+    <button mat-stroked-button mat-dialog-close="cancel">キャンセル</button>
+  </mat-dialog-actions>
+</div>

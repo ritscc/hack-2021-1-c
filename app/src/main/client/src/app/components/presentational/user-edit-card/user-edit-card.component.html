@@ -1,0 +1,162 @@
+<mat-grid-list cols="1" rowHeight="600px">
+  <mat-grid-tile>
+    <form
+      (ngSubmit)="onSubmit()"
+      class="user-create-form"
+      #userEditForm="ngForm"
+    >
+      <mat-form-field
+        *ngIf="enableName"
+        appearance="fill"
+        class="crms-form-width-50"
+        (click)="onClickDisabledColumn(!allowNameInput)"
+      >
+        <mat-label>First Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="user.firstName"
+          name="first-name"
+          [disabled]="!allowNameInput"
+          required
+        />
+        <mat-error>ファーストネームを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enableName"
+        appearance="fill"
+        class="crms-form-width-50 crms-form-ml-2"
+        (click)="onClickDisabledColumn(!allowNameInput)"
+      >
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="user.lastName"
+          name="last-name"
+          [disabled]="!allowNameInput"
+          required
+        />
+        <mat-error>ラストネームを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enableEmail"
+        appearance="fill"
+        class="crms-form-width-100"
+        (click)="onClickDisabledColumn(!allowEmailInput)"
+      >
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          [(ngModel)]="user.email"
+          name="email"
+          [disabled]="!allowEmailInput"
+          required
+        />
+        <mat-error>メールアドレスを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enablePassword"
+        appearance="fill"
+        class="crms-form-width-100"
+        (click)="onClickDisabledColumn(!allowPasswordInput)"
+      >
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          [(ngModel)]="user.password"
+          name="password"
+          [disabled]="!allowPasswordInput"
+          required
+        />
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{
+          hidePassword ? "visibility" : "visibility_off"
+        }}</mat-icon>
+        <mat-error>パスワードを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enableCurrentPassword"
+        appearance="fill"
+        class="crms-form-width-100"
+        (click)="onClickDisabledColumn(!allowCurrentPasswordInput)"
+      >
+        <mat-label>現在のパスワード</mat-label>
+        <input
+          matInput
+          [type]="hideCurrentPassword ? 'password' : 'text'"
+          [(ngModel)]="user.currentPassword"
+          name="current-password"
+          [disabled]="!allowCurrentPasswordInput"
+          required
+        />
+        <mat-icon
+          matSuffix
+          (click)="hideCurrentPassword = !hideCurrentPassword"
+          >{{ hideCurrentPassword ? "visibility" : "visibility_off" }}</mat-icon
+        >
+        <mat-error>現在のパスワードを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enableNewPassword"
+        appearance="fill"
+        class="crms-form-width-100"
+        (click)="onClickDisabledColumn(!allowNewPasswordInput)"
+      >
+        <mat-label>新しいパスワード</mat-label>
+        <input
+          matInput
+          [type]="hideNewPassword ? 'password' : 'text'"
+          [(ngModel)]="user.newPassword"
+          name="new-password"
+          [disabled]="!allowNewPasswordInput"
+          required
+        />
+        <mat-icon matSuffix (click)="hideNewPassword = !hideNewPassword">{{
+          hideNewPassword ? "visibility" : "visibility_off"
+        }}</mat-icon>
+        <mat-error>新しいパスワードを入力してください</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="enableRoleId"
+        class="crms-form-width-100"
+        (click)="onClickDisabledColumn(!allowRoleIdInput)"
+      >
+        <mat-label>権限</mat-label>
+        <mat-select
+          [(ngModel)]="user.roleId"
+          name="roleId"
+          [disabled]="!allowRoleIdInput"
+          required
+        >
+          <mat-option [value]="1">管理者</mat-option>
+          <mat-option [value]="2">一般</mat-option>
+        </mat-select>
+        <mat-error>権限を入力してください</mat-error>
+      </mat-form-field>
+
+      <button
+        type="button"
+        mat-raised-button
+        class="crms-form-width-100 crms-fg-black1 crms-bg-gray2 goback-button"
+        (click)="onGoBack()"
+      >
+        保存せずに戻る
+      </button>
+
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="userEditForm.invalid"
+        class="crms-form-width-100 crms-fg-white1 submit-button"
+      >
+        編集内容を保存する
+      </button>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>

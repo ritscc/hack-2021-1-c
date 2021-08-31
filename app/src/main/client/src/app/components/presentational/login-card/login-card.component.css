@@ -1,0 +1,13 @@
+mat-card {
+  width: 400px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}
+
+mat-card-header {
+  justify-content: center;
+}
