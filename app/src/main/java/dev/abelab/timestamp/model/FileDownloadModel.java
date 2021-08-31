@@ -17,11 +17,6 @@ public class FileDownloadModel {
     String name;
 
     /**
-     * ファイルタイプ
-     */
-    String type;
-
-    /**
      * ファイル内容
      */
     byte[] content;
