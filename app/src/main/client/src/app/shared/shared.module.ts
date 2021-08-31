@@ -33,9 +33,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HeaderUserMenuComponent } from './components/header/header-user-menu/header-user-menu.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [SnackBarComponent, FooterComponent, HeaderComponent, SidenavComponent, HeaderUserMenuComponent],
+  declarations: [SnackBarComponent, FooterComponent, HeaderComponent, SidenavComponent, HeaderUserMenuComponent, ConfirmDialogComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,

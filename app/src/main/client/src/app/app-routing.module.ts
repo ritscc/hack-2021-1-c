@@ -6,6 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/page/login/login.component';
 // dashboard
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
+// admin
+import { AdminComponent } from './components/page/admin/admin.component';
+import { UsersComponent } from './components/page/admin/users/users.component';
 // others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -26,6 +29,12 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AdminGuard],
+        children: [{ path: 'users', component: UsersComponent }],
       },
     ],
   },

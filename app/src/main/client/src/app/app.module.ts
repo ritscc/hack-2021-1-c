@@ -13,9 +13,13 @@ import { ErrorPageComponent } from './components/page/error-page/error-page.comp
 import { LoginComponent } from './components/page/login/login.component';
 import { LoginFormComponent } from './components/container/login-form/login-form.component';
 import { LoginCardComponent } from './components/presentational/login-card/login-card.component';
+import { AdminComponent } from './components/page/admin/admin.component';
+import { UsersComponent } from './components/page/admin/users/users.component';
+import { UsersContentsComponent } from './components/container/users-contents/users-contents.component';
+import { UsersTableComponent } from './components/presentational/users-table/users-table.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TitleBoxComponent, ErrorPageComponent, LoginComponent, LoginFormComponent, LoginCardComponent],
+  declarations: [AppComponent, DashboardComponent, TitleBoxComponent, ErrorPageComponent, LoginComponent, LoginFormComponent, LoginCardComponent, AdminComponent, UsersComponent, UsersContentsComponent, UsersTableComponent],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],

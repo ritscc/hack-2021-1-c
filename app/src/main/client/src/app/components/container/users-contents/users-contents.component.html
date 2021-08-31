@@ -1,0 +1,25 @@
+<div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="0px">
+  <app-title-box [title]="'管理者ページ'"></app-title-box>
+
+  <div class="control-menu" fxLayout="row" fxLayoutAlign="start center">
+    <div class="new-user-button-container" fxLayout="row" fxLayoutAlign="end center">
+      <button
+        mat-raised-button
+        class="mat-elevation-z3 new-user-button crms-fg-white1"
+        color="primary"
+        (click)="onClickCreateButton()"
+      >
+        <mat-icon>add</mat-icon>
+        <span>ユーザ新規作成</span>
+      </button>
+    </div>
+  </div>
+
+  <app-users-table
+    *ngIf="users"
+    class="scroll-content"
+    [users]="users"
+    (userEditTransit)="handleUserEditTransit($event)"
+    (userDeleteTransit)="handleUserDelete($event)"
+  ></app-users-table>
+</div>
