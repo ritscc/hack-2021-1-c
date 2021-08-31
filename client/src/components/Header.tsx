@@ -6,7 +6,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { ThemeProvider } from "@material-ui/styles";
 import Link from "@material-ui/core/Link";
 
-import { HeaderTab } from "./HeaderTab";
 import Logo from "./Logo";
 import User from "./User";
 import Button from "@material-ui/core/Button";
@@ -42,7 +41,7 @@ export default function Header() {
             <nav>
               <Link
                 variant="button"
-                color="primary"
+                color="inherit"
                 href="#"
                 className={classes.link}
               >
@@ -50,7 +49,7 @@ export default function Header() {
               </Link>
               <Link
                 variant="button"
-                color="primary"
+                color="inherit"
                 href="#"
                 className={classes.link}
               >
@@ -65,15 +64,3 @@ export default function Header() {
     </React.Fragment>
   );
 }
-
-// export default function Header() {
-//   const classes = useStyles();
-
-//   return (
-//     <div className={classes.root}>
-//       <AppBar position="static">
-//         <Button color="inherit">Login</Button>
-//       </AppBar>
-//     </div>
-//   );
-// }

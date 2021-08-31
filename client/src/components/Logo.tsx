@@ -1,6 +1,6 @@
 import Typography from "@material-ui/core/Typography";
 import { useStyles } from "./themeHeader";
-
+import SettingsIcon from "@material-ui/icons/Settings";
 export default function Logo() {
   const classes = useStyles();
   return (
@@ -10,7 +10,7 @@ export default function Logo() {
       noWrap
       className={classes.toolbarTitle}
     >
-      ここをロゴにする
+      <SettingsIcon />
     </Typography>
   );
 }

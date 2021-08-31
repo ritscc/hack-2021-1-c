@@ -6,18 +6,12 @@ export default function User() {
   const classes = useStyles();
   return (
     <>
-      <AccountCircleIcon
-        color="primary"
-        fontSize="large"
-        className={classes.link}
-      />
-
-      <Button
-        href="#"
-        color="primary"
-        variant="outlined"
-        className={classes.link}
-      >
+      <Button href="#" color="primary" variant="text" className={classes.link}>
+        <AccountCircleIcon
+          color="primary"
+          fontSize="large"
+          className={classes.link}
+        />
         User
       </Button>
     </>
