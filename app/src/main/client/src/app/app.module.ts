@@ -20,6 +20,8 @@ import { UsersTableComponent } from './components/presentational/users-table/use
 import { UserEditCardComponent } from './components/presentational/user-edit-card/user-edit-card.component';
 import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
 import { UsersNewFormComponent } from './components/container/users-new-form/users-new-form.component';
+import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
+import { UsersEditFormComponent } from './components/container/users-edit-form/users-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { UsersNewFormComponent } from './components/container/users-new-form/use
     UserEditCardComponent,
     UsersNewComponent,
     UsersNewFormComponent,
+    UsersEditComponent,
+    UsersEditFormComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],

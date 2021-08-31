@@ -10,6 +10,7 @@ import { DashboardComponent } from './components/page/dashboard/dashboard.compon
 import { AdminComponent } from './components/page/admin/admin.component';
 import { UsersComponent } from './components/page/admin/users/users.component';
 import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
+import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
 // others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -40,6 +41,10 @@ const routes: Routes = [
           {
             path: 'users/new',
             component: UsersNewComponent,
+          },
+          {
+            path: 'users/:userId/edit',
+            component: UsersEditComponent,
           },
         ],
       },
