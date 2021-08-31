@@ -2,8 +2,12 @@
   <mat-sidenav mode="side" class="side-menu crms-bg-navy1" opened>
     <mat-nav-list>
       <a mat-list-item [routerLink]="'/stamps'">
-        <mat-icon class="crms-fg-white2">collections</mat-icon>
+				<mat-icon class="crms-fg-white2">filter</mat-icon>
         <p class="column-text crms-fg-white2">スタンプ一覧</p>
+      </a>
+      <a mat-list-item [routerLink]="'/slideshow'">
+        <mat-icon class="crms-fg-white2">slideshow</mat-icon>
+        <p class="column-text crms-fg-white2">スライドショー</p>
       </a>
       <a mat-list-item [routerLink]="'/admin/users'">
         <mat-icon class="crms-fg-white2">admin_panel_settings</mat-icon>
