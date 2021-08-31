@@ -1,7 +1,7 @@
 import { HttpBaseService } from "./http-base-service";
 
 import { environment } from "../environments/environment";
-import { UserModel } from "../model/user-model";
+import { UserModel, UsersModel } from "../model/user-model";
 import {
   LoginUserUpdateRequest,
   LoginUserPasswordUpdateRequest,
@@ -11,7 +11,7 @@ import {
 
 export class UserService {
   public static getUsers() {
-    return HttpBaseService.getRequest<UserModel[]>(
+    return HttpBaseService.getRequest<UsersModel>(
       `${environment.API_BASE_URI}/api/users`
     );
   }

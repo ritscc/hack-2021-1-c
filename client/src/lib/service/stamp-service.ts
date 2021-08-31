@@ -1,12 +1,12 @@
 import { HttpBaseService } from "./http-base-service";
 
 import { environment } from "../environments/environment";
-import { StampModel } from "../model/stamp-model";
+import { StampsModel } from "../model/stamp-model";
 import { StampCreateRequest } from "../request/stamp-request";
 
 export class StampService {
   public static getStamps() {
-    return HttpBaseService.getRequest<StampModel[]>(
+    return HttpBaseService.getRequest<StampsModel>(
       `${environment.API_BASE_URI}/api/stamps`
     );
   }

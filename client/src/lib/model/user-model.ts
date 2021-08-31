@@ -10,6 +10,11 @@ export interface UserModel {
   roleId: UserRoleEnum;
 }
 
+// ユーザ一覧モデル
+export interface UsersModel {
+  users: UserModel[];
+}
+
 // アクセストークンモデル
 export interface AccessTokenModel {
   accessToken: string;
