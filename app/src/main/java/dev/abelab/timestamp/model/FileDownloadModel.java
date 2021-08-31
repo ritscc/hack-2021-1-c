@@ -5,20 +5,16 @@ import lombok.*;
 /**
  * ファイルのダウンロードモデル
  */
-@Value
+@Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileDownloadModel {
 
     /**
      * ファイル名
      */
     String name;
-
-    /**
-     * ファイルタイプ
-     */
-    String type;
 
     /**
      * ファイル内容

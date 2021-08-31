@@ -1,8 +1,11 @@
 package dev.abelab.timestamp.api.controller.internal;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -96,6 +99,37 @@ public class StampRestController {
         @ApiParam(name = "user_id", required = true, value = "スタンプID") @PathVariable("stamp_id") final int stampId //
     ) {
         this.stampService.deleteStamp(credentials, stampId);
+    }
+
+    /**
+     * 添付ファイルダウンロードAPI
+     *
+     * @param credentials  資格情報
+     *
+     * @param attachmentId 添付ファイルID
+     *
+     * @return 添付ファイル
+     */
+    @ApiOperation( //
+        value = "添付ファイルのダウンロード", //
+        notes = "添付ファイルをダウンロードする。" //
+    )
+    @ApiResponses( //
+        value = { //
+                @ApiResponse(code = 200, message = "取得成功"), //
+                @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
+                @ApiResponse(code = 404, message = "スタンプが存在しない"), //
+        })
+    @GetMapping(value = "/attachments/{attachment_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> getAttachments( //
+        @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = true) final String credentials, //
+        @ApiParam(name = "attachment_id", required = true, value = "添付ファイルID") @PathVariable("attachment_id") final int attachmentId //
+    ) {
+        final var file = this.stampService.getStampAttachment(credentials, attachmentId);
+        return ResponseEntity.ok() //
+            .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", file.getName()))
+            .body(new ByteArrayResource(file.getContent()));
     }
 
 }

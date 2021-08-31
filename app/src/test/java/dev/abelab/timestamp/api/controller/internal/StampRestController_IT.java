@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.net.util.Base64;
 import org.modelmapper.ModelMapper;
 
 import dev.abelab.timestamp.api.controller.AbstractRestController_IT;
@@ -50,6 +51,7 @@ public class StampRestController_IT extends AbstractRestController_IT {
 	static final String GET_STAMPS_PATH = BASE_PATH;
 	static final String CREATE_STAMP_PATH = BASE_PATH;
 	static final String DELETE_STAMP_PATH = BASE_PATH + "/%d";
+	static final String GET_STAMP_ATTACHMENT_PATH = BASE_PATH + "/attachments/%d";
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -148,7 +150,7 @@ public class StampRestController_IT extends AbstractRestController_IT {
 			requestBody.setAttachments(stampAttachments.stream() //
 				.map(attachment -> {
 					final var attachmentSubmitmodel = modelMapper.map(attachment, StampAttachmentSubmitModel.class);
-					attachmentSubmitmodel.setContent(SAMPLE_STR);
+					attachmentSubmitmodel.setContent(Base64.encodeBase64String(attachment.getContent()));
 					return attachmentSubmitmodel;
 				}).collect(Collectors.toList()));
 
@@ -163,9 +165,9 @@ public class StampRestController_IT extends AbstractRestController_IT {
 				.extracting(Stamp::getTitle, Stamp::getDescription, Stamp::getUserId) //
 				.containsExactly(stamp.getTitle(), stamp.getDescription(), loginUser.getId());
 			assertThat(createdStamp.getAttachments()) //
-				.extracting(StampAttachment::getStampId, StampAttachment::getName) //
+				.extracting(StampAttachment::getStampId, StampAttachment::getName, StampAttachment::getContent) //
 				.containsExactlyInAnyOrderElementsOf(stampAttachments.stream() //
-					.map(attachment -> tuple(createdStamp.getId(), attachment.getName())) //
+					.map(attachment -> tuple(createdStamp.getId(), attachment.getName(), attachment.getContent())) //
 					.collect(Collectors.toList()));
 		}
 
@@ -189,11 +191,8 @@ public class StampRestController_IT extends AbstractRestController_IT {
 
 			final var requestBody = modelMapper.map(stamp, StampCreateRequest.class);
 			requestBody.setAttachments(stampAttachments.stream() //
-				.map(attachment -> {
-					final var attachmentSubmitmodel = modelMapper.map(attachment, StampAttachmentSubmitModel.class);
-					attachmentSubmitmodel.setContent(SAMPLE_STR);
-					return attachmentSubmitmodel;
-				}).collect(Collectors.toList()));
+				.map(attachment -> modelMapper.map(attachment, StampAttachmentSubmitModel.class)) //
+				.collect(Collectors.toList()));
 
 			// test
 			final var request = postRequest(CREATE_STAMP_PATH, requestBody);
@@ -286,6 +285,53 @@ public class StampRestController_IT extends AbstractRestController_IT {
 		void 異_無効な認証ヘッダ() throws Exception {
 			// test
 			final var request = deleteRequest(String.format(DELETE_STAMP_PATH, SAMPLE_INT));
+			request.header(HttpHeaders.AUTHORIZATION, "");
+			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
+		}
+
+	}
+
+	/**
+	 * 添付ファイルダウンロードAPIのテスト
+	 */
+	@Nested
+	@TestInstance(PER_CLASS)
+	class DownloadStampAttachmentTest extends AbstractRestControllerInitialization_IT {
+
+		@ParameterizedTest
+		@MethodSource
+		void 正_添付ファイルをダウンロード(final UserRoleEnum roleId) throws Exception {
+			// login user
+			final var loginUser = createLoginUser(roleId);
+			final var credentials = getLoginUserCredentials(loginUser);
+
+			final var stamp = StampSample.builder().userId(loginUser.getId()).build();
+			stampRepository.insert(stamp);
+
+			final var stampAttachment = StampAttachmentSample.builder().stampId(stamp.getId()).build();
+			stampAttachmentRepository.insert(stampAttachment);
+
+			// test
+			final var request = getRequest(String.format(GET_STAMP_ATTACHMENT_PATH, stampAttachment.getId()));
+			request.header(HttpHeaders.AUTHORIZATION, credentials);
+			final var response = execute(request, HttpStatus.OK);
+
+			// verify
+			assertThat(response.getResponse().getContentLength()).isEqualTo(stampAttachment.getContent().length);
+		}
+
+		Stream<Arguments> 正_添付ファイルをダウンロード() {
+			return Stream.of(
+				// 管理者
+				arguments(UserRoleEnum.ADMIN),
+				// メンバー
+				arguments(UserRoleEnum.MEMBER));
+		}
+
+		@Test
+		void 異_無効な認証ヘッダ() throws Exception {
+			// test
+			final var request = getRequest(String.format(GET_STAMP_ATTACHMENT_PATH, SAMPLE_INT));
 			request.header(HttpHeaders.AUTHORIZATION, "");
 			execute(request, new UnauthorizedException(ErrorCode.INVALID_ACCESS_TOKEN));
 		}

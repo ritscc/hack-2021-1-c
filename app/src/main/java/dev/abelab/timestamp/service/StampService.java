@@ -11,7 +11,9 @@ import dev.abelab.timestamp.db.entity.Stamp;
 import dev.abelab.timestamp.api.request.StampCreateRequest;
 import dev.abelab.timestamp.api.response.StampResponse;
 import dev.abelab.timestamp.api.response.StampsResponse;
+import dev.abelab.timestamp.model.FileDownloadModel;
 import dev.abelab.timestamp.repository.StampRepository;
+import dev.abelab.timestamp.repository.StampAttachmentRepository;
 import dev.abelab.timestamp.logic.UserLogic;
 import dev.abelab.timestamp.logic.StampLogic;
 
@@ -22,6 +24,8 @@ public class StampService {
     private final ModelMapper modelMapper;
 
     private final StampRepository stampRepository;
+
+    private final StampAttachmentRepository stampAttachmentRepository;
 
     private final UserLogic userLogic;
 
@@ -86,6 +90,24 @@ public class StampService {
 
         // スタンプを削除
         this.stampRepository.deleteById(stampId);
+    }
+
+    /**
+     * 添付ファイルを取得
+     *
+     * @param credentials  資格情報
+     *
+     * @param attachmentId 添付ファイルID
+     *
+     * @return 添付ファイル
+     */
+    public FileDownloadModel getStampAttachment(final String credentials, final int attachmentId) {
+        // ログインユーザを取得
+        this.userLogic.getLoginUser(credentials);
+
+        // 添付ファイルを取得
+        final var attachment = this.stampAttachmentRepository.selectById(attachmentId);
+        return this.modelMapper.map(attachment, FileDownloadModel.class);
     }
 
 }
