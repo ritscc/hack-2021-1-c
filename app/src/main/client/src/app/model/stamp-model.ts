@@ -6,6 +6,7 @@ export interface StampModel {
   title: string;
   description: string;
   userId: number;
+  createdAt: Date;
   attachments: StampAttachmentModel[];
 }
 

@@ -3,7 +3,9 @@
     <mat-card-content fxLayout="column" fxLayoutAlign="start">
       <div fxLayout="row" fxLayoutAlign="space-between end">
         <span class="stamp-title crms-fg-black2">{{ stamp.title }}</span>
-        <span class="stamp-date-text crms-fg-black2">2021/8/31</span>
+        <span class="stamp-date-text crms-fg-black2">{{
+          stamp.createdAt.toLocaleString().split('T')[0]
+        }}</span>
       </div>
 
       <div class="stamp-image-area" fxLayout="row" fxLayoutAlign="start start" fxFlexOffset="20px">
@@ -12,10 +14,7 @@
           src="https://www.hsnove.co.jp/wp-content/uploads/2020/11/sea-ocean_00003.jpg"
         />
         <img class="stamp-image" src="https://unsplash.it/180/120" />
-        <img
-          class="stamp-image"
-          src="https://pro-foto.jp/img/category_tn_33.jpg"
-        />
+        <img class="stamp-image" src="https://pro-foto.jp/img/category_tn_33.jpg" />
       </div>
 
       <div class="stamp-description crms-fg-black2" fxFlexOffset="20px">
@@ -23,7 +22,7 @@
       </div>
 
       <div class="stamp-author crms-fg-black2" fxFlexOffset="5px">
-        投稿者： {{ stamp.user.lastName + " " + stamp.user.firstName }}
+        投稿者： {{ stamp.user.lastName + ' ' + stamp.user.firstName }}
       </div>
     </mat-card-content>
   </div>
