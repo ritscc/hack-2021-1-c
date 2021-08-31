@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  API_PREFIX: 'https://api.abelab.dev/timestamp',
+  API_PREFIX: 'http://localhost:8080',
   CREDENTIALS_KEY: 'Authorization',
 };

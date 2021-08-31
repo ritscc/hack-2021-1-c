@@ -42,14 +42,17 @@ export class StampNewCardComponent implements OnInit {
       return;
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = () => {
-      const result = reader.result as string;
-      this.requestBody.attachments.push({
-        name: files[0].name,
-        content: result.slice(result.indexOf(',') + 1),
-      });
-    };
+    Array.from(files).forEach((file) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const result = reader.result as string;
+        this.requestBody.attachments.push({
+          name: file.name,
+          content: result.slice(result.indexOf(',') + 1),
+        });
+      };
+    });
   }
 }

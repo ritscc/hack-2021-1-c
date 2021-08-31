@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { StampService } from 'src/app/shared/services/stamp.service';
-import { StampModel } from 'src/app/model/stamp-model';
 import { StampCreateRequest } from 'src/app/request/stamp-request';
 
 @Component({
