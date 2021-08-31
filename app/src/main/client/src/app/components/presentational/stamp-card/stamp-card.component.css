@@ -11,6 +11,11 @@ mat-card {
   font-size: 14px;
 }
 
+.stamp-description {
+  height: 50px;
+  overflow-y: scroll;
+}
+
 .stamp-image-area {
   max-width: 400px;
   overflow-x: scroll;

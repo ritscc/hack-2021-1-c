@@ -1,27 +1,22 @@
-<div
-  class="stamps-content scroll-content"
-  fxLayout="column"
-  fxLayoutAlign="start start"
-  fxLayoutGap="10px"
->
-  <div
-    class="new-stamp-button-container"
-    fxLayout="row"
-    fxLayoutAlign="end center"
-  >
-    <button
-      mat-raised-button
-      class="mat-elevation-z3 new-stamp-button crms-fg-white1"
-      color="primary"
-    >
-      <mat-icon>add</mat-icon>
-      <span>スタンプ新規作成</span>
-    </button>
-  </div>
+<div fxLayout="column" fxLayoutAlign="start">
+  <app-title-box [title]="'スタンプ一覧'"></app-title-box>
 
-  <div fxLayout="row wrap" fxLayoutAlign="start wrap" fxLayoutGap="10px">
-    <div *ngFor="let stamp of stamps">
-      <app-stamp-card [stamp]="stamp"></app-stamp-card>
+  <div class="stamps-content" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <div class="new-stamp-button-container" fxLayout="row" fxLayoutAlign="end center">
+      <button
+        mat-raised-button
+        class="mat-elevation-z3 new-stamp-button crms-fg-white1"
+        color="primary"
+      >
+        <mat-icon>add</mat-icon>
+        <span>スタンプ新規作成</span>
+      </button>
+    </div>
+
+    <div class="scroll-content" fxLayout="row wrap" fxLayoutAlign="start wrap" fxLayoutGap="10px">
+      <div *ngFor="let stamp of stamps">
+        <app-stamp-card [stamp]="stamp"></app-stamp-card>
+      </div>
     </div>
   </div>
 </div>
