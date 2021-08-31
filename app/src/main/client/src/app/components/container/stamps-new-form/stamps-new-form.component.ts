@@ -24,17 +24,9 @@ export class StampsNewFormComponent implements OnInit {
     this.router.navigate(['/stamps']);
   }
 
-  handleSubmitStamp(stamp: StampModel): void {
-    // スタンプ作成リクエスト
-    const requestBody: StampCreateRequest = {
-      title: stamp.title,
-      description: stamp.description,
-      // FIXME: 添付ファイルリストを入れる
-      attachments: [],
-    };
-
+  handleSubmitStamp(requestBody: StampCreateRequest): void {
     // リクエスト送信
-    this.stampService.createUser(requestBody).subscribe(
+    this.stampService.createStamp(requestBody).subscribe(
       () => {
         this.stampService.fetchStamps();
         this.handleGoBack();

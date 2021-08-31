@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS `stamp_attachment` (
   CONSTRAINT `fk_stamp_id`
     FOREIGN KEY (`stamp_id`)
     REFERENCES `stamp` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION
 );

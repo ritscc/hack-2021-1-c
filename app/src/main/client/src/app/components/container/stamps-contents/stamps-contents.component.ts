@@ -60,7 +60,7 @@ export class StampsContentsComponent implements OnInit {
   }
 
   deleteStamp(stamp: StampModel): void {
-    this.stampService.deleteUser(stamp.id).subscribe(
+    this.stampService.deleteStamp(stamp.id).subscribe(
       () => {
         this.stampService.fetchStamps();
         this.alertService.openSnackBar('スタンプを削除しました', 'SUCCESS');
