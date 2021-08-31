@@ -40,7 +40,6 @@ public class UserRestController {
         value = { //
                 @ApiResponse(code = 200, message = "取得成功", response = UsersResponse.class), //
                 @ApiResponse(code = 401, message = "ユーザがログインしていない"), //
-                @ApiResponse(code = 403, message = "ユーザに権限がない") //
         })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
