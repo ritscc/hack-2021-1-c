@@ -9,3 +9,9 @@ export interface UserModel {
   lastName: string;
   roleId: UserRoleEnum;
 }
+
+// アクセストークンモデル
+export interface AccessTokenModel {
+  accessToken: string;
+  tokenType: string;
+}

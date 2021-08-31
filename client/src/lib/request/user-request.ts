@@ -25,7 +25,7 @@ export interface LoginUserUpdateRequest {
 }
 
 // ログインユーザパスワード更新APIのリクエストボディ
-export interface LoginUserPasswordRequest {
+export interface LoginUserPasswordUpdateRequest {
   currentPassword: string;
   newPassword: string;
 }

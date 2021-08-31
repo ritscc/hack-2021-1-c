@@ -3,7 +3,16 @@ import styles from "../styles/Home.module.css";
 import Header from "../components/Header";
 import { Footer } from "../components/Footer";
 
+import { AuthService } from "../lib/service/auth-service";
+import { AccessTokenModel } from "../lib/model/user-model";
+
 export default function Home() {
+  AuthService.login({
+    email: "test@abelab.dev",
+    password: "CANms8jddDJH",
+  }).then(() => {
+    alert(AuthService.getCredentials());
+  });
   return (
     <div className={styles.container}>
       <Head>
