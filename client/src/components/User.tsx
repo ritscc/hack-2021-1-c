@@ -1,16 +1,43 @@
 import Button from "@material-ui/core/Button";
-import { useStyles } from "./themeHeader";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
+import { createTheme, makeStyles } from "@material-ui/core/styles";
 
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import SendIcon from "@material-ui/icons/Send";
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#A3161C",
+    },
+    secondary: {
+      main: "#333333",
+    },
+  },
+});
 
+export const useStyles = makeStyles((theme) => ({
+  "@global": {
+    ul: {
+      margin: 0,
+      padding: 0,
+      listStyle: "none",
+    },
+  },
+  appBar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  toolbar: {
+    flexWrap: "wrap",
+  },
+  toolbarTitle: {
+    flexGrow: 1,
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+  },
+}));
 const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
@@ -44,7 +71,7 @@ export default function User() {
   };
   return (
     <>
-      <div>
+      <div style={{ marginRight: "2rem" }}>
         <Button
           aria-controls="customized-menu"
           aria-haspopup="true"
