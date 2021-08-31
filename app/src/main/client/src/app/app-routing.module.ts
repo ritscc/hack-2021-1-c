@@ -11,6 +11,11 @@ import { AdminComponent } from './components/page/admin/admin.component';
 import { UsersComponent } from './components/page/admin/users/users.component';
 import { UsersNewComponent } from './components/page/admin/users-new/users-new.component';
 import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
+// stamps
+import { StampsComponent } from './components/page/stamps/stamps.component';
+import { MypageComponent } from './components/page/mypage/mypage.component';
+import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
+import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
 // others
 import { ErrorPageComponent } from './components/page/error-page/error-page.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -31,6 +36,24 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      {
+        path: 'stamps',
+        component: StampsComponent,
+      },
+      {
+        path: 'mypage',
+        component: MypageComponent,
+        children: [
+          {
+            path: 'profile',
+            component: ProfileEditComponent,
+          },
+          {
+            path: 'password',
+            component: PasswordEditComponent,
+          },
+        ],
       },
       {
         path: 'admin',

@@ -22,6 +22,12 @@ import { UsersNewComponent } from './components/page/admin/users-new/users-new.c
 import { UsersNewFormComponent } from './components/container/users-new-form/users-new-form.component';
 import { UsersEditComponent } from './components/page/admin/users-edit/users-edit.component';
 import { UsersEditFormComponent } from './components/container/users-edit-form/users-edit-form.component';
+import { StampsComponent } from './components/page/stamps/stamps.component';
+import { MypageComponent } from './components/page/mypage/mypage.component';
+import { ProfileEditComponent } from './components/page/mypage/profile-edit/profile-edit.component';
+import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
+import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
+import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +47,12 @@ import { UsersEditFormComponent } from './components/container/users-edit-form/u
     UsersNewFormComponent,
     UsersEditComponent,
     UsersEditFormComponent,
+    StampsComponent,
+    MypageComponent,
+    ProfileEditComponent,
+    PasswordEditComponent,
+    MypagePasswordEditFormComponent,
+    MypageProfileEditFormComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],
