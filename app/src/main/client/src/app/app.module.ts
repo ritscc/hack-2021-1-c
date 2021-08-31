@@ -28,6 +28,7 @@ import { ProfileEditComponent } from './components/page/mypage/profile-edit/prof
 import { PasswordEditComponent } from './components/page/mypage/password-edit/password-edit.component';
 import { MypagePasswordEditFormComponent } from './components/container/mypage-password-edit-form/mypage-password-edit-form.component';
 import { MypageProfileEditFormComponent } from './components/container/mypage-profile-edit-form/mypage-profile-edit-form.component';
+import { StampsContentsComponent } from './components/container/stamps-contents/stamps-contents.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MypageProfileEditFormComponent } from './components/container/mypage-pr
     PasswordEditComponent,
     MypagePasswordEditFormComponent,
     MypageProfileEditFormComponent,
+    StampsContentsComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],
