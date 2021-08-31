@@ -7,7 +7,6 @@ export const Header = () => (
   <>
     <div
       style={{
-        position: "fixed",
         backgroundColor: "#333333",
         width: "100%",
         display: "flex",
