@@ -3,6 +3,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { StampModel, StampWithUserModel } from 'src/app/model/stamp-model';
 import { UserService } from 'src/app/shared/services/user.service';
 import { StampService } from 'src/app/shared/services/stamp.service';
+import { DownloadBlobService } from 'src/app/shared/services/download-blob.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class StampsContentsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private stampService: StampService,
+    private downloadBlobService: DownloadBlobService,
     private alertService: AlertService
   ) {}
 
@@ -26,7 +28,7 @@ export class StampsContentsComponent implements OnInit {
     this.userService.getUsers().subscribe((_) => {
       this.stampService.getStamps().subscribe(
         (stamps: StampModel[]) => {
-					this.stamps = [];
+          this.stamps = [];
           stamps.forEach((stamp) => {
             const user = this.userService.selectById(stamp.userId);
             if (user === undefined) {
@@ -57,6 +59,19 @@ export class StampsContentsComponent implements OnInit {
         if (result) this.deleteStamp(stamp);
       }
     );
+  }
+
+  handleDownloadAttachment(stamp: StampModel): void {
+    stamp.attachments.forEach((attachment) => {
+      this.stampService.downloadAttachment(attachment.id).subscribe(
+        (attachmentBlob) => {
+          this.downloadBlobService.download(attachmentBlob, attachment.name);
+        },
+        (error) => {
+          this.alertService.openSnackBar(error, 'ERROR');
+        }
+      );
+    });
   }
 
   deleteStamp(stamp: StampModel): void {

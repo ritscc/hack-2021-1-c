@@ -16,7 +16,11 @@
 
     <div class="scroll-content" fxLayout="row wrap" fxLayoutAlign="start wrap" fxLayoutGap="10px">
       <div *ngFor="let stamp of stamps">
-        <app-stamp-card [stamp]="stamp" (deleteStamp)="handleDeleteStamp($event)"></app-stamp-card>
+        <app-stamp-card
+          [stamp]="stamp"
+          (downloadAttachment)="handleDownloadAttachment($event)"
+          (deleteStamp)="handleDeleteStamp($event)"
+        ></app-stamp-card>
       </div>
     </div>
   </div>

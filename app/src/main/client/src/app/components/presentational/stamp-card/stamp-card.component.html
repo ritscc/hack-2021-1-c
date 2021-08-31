@@ -5,7 +5,7 @@
         <span class="stamp-title crms-fg-black2">{{ stamp.title }}</span>
 
         <div class="stamp-buttons">
-          <button mat-icon-button class="crms-fg-black2">
+          <button mat-icon-button class="crms-fg-black2" (click)="onDownload()">
             <mat-icon>download</mat-icon>
           </button>
           <button mat-icon-button class="crms-fg-black2" (click)="onDelete()">

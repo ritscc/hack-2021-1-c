@@ -49,7 +49,7 @@ export class StampService {
   }
 
   downloadAttachment(attachmentId: number) {
-    return this.httpBaseService.getRequest<any>(
+    return this.httpBaseService.getRequestAsBlob(
       `${environment.API_PREFIX}/api/stamps/attachments/${attachmentId}`
     );
   }

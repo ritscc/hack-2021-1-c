@@ -94,4 +94,26 @@ export class HttpBaseService {
       })
     );
   }
+
+  getRequestAsBlob(url: string) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: this.authService.getCredentials(),
+      }),
+      responseType: 'blob' as 'json',
+    };
+
+    return this.http.get<Blob>(url, options).pipe(
+      catchError((error) => {
+        console.log(error);
+        // 無効なJWT
+        if (error.status == 401) {
+          this.authService.logout();
+        }
+
+        throw this.errorMessageService.getErrorMessage(error.error.code);
+      })
+    );
+  }
 }
