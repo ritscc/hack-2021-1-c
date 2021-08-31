@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
+import { AccessTokenModel } from 'src/app/model/user-model';
 import { LoginRequest } from 'src/app/request/login-request';
 import { ErrorMessageService } from 'src/app/shared/services/error-message.service';
 
@@ -28,7 +29,11 @@ export class AuthService {
     };
 
     return this.http
-      .post<any>(`${environment.API_PREFIX}/api/login`, requestBody, options)
+      .post<any>(
+        `${environment.API_PREFIX}/api/login`,
+        requestBody,
+        options
+      )
       .pipe(
         catchError((error) => {
           this.logout();
@@ -48,5 +53,12 @@ export class AuthService {
 
   public getCredentials(): string {
     return this.cookieService.get(environment.CREDENTIALS_KEY);
+  }
+
+  public setCredentials(accessToken: AccessTokenModel): void {
+    this.cookieService.set(
+      environment.CREDENTIALS_KEY,
+      `${accessToken.tokenType} ${accessToken.accessToken}`
+    );
   }
 }

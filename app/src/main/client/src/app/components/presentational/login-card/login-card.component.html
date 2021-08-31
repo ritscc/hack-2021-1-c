@@ -1,0 +1,46 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title class="login-title crms-fg-black2"
+      >TIME STAMP</mat-card-title
+    >
+  </mat-card-header>
+
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Email"
+          [(ngModel)]="loginRequest.email"
+          name="login-email"
+          required
+        />
+        <mat-error> メールアドレスを入力してください </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width-input">
+        <input
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          placeholder="Password"
+          [(ngModel)]="loginRequest.password"
+          name="login-password"
+          required
+        />
+        <mat-icon matSuffix (click)="hide = !hide">{{
+          hide ? "visibility" : "visibility_off"
+        }}</mat-icon>
+        <mat-error> パスワードを入力してください </mat-error>
+      </mat-form-field>
+
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

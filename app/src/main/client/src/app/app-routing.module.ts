@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// page components
+// login
+import { LoginComponent } from './components/page/login/login.component';
 // dashboard
 import { DashboardComponent } from './components/page/dashboard/dashboard.component';
 // others
@@ -13,6 +16,7 @@ import { LoginedGuard } from './shared/guards/logined.guard';
 import { AdminGuard } from './shared/guards/admin.guard';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent, canActivate: [LoginedGuard] },
   {
     path: '',
     component: HeaderComponent,
