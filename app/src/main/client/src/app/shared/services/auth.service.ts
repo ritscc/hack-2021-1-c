@@ -29,11 +29,7 @@ export class AuthService {
     };
 
     return this.http
-      .post<any>(
-        `${environment.API_PREFIX}/api/login`,
-        requestBody,
-        options
-      )
+      .post<any>(`${environment.API_PREFIX}/api/login`, requestBody, options)
       .pipe(
         catchError((error) => {
           this.logout();
@@ -43,8 +39,9 @@ export class AuthService {
   }
 
   public logout(): void {
+    this.cookieService.delete(environment.CREDENTIALS_KEY);
+    console.log(this.getCredentials());
     this.router.navigate(['/login']);
-    this.cookieService.deleteAll();
   }
 
   public checkAuthenticated(): boolean {
