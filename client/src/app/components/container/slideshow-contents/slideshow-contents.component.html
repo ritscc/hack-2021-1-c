@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign="start">
+  <app-title-box [title]="'スライドショー'"></app-title-box>
+
+  <div class="slideshow-content" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100px">
+      <button mat-icon-button class="crms-fg-black2" (click)="onPreviousClick()">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <button mat-icon-button class="crms-fg-black2" (click)="onNextClick()">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+      <h2 class="crms-fg-black2 slide-title">{{ getSlideTitle(slideIndex) }}</h2>
+    </div>
+  </div>
+
+  <div
+    class="stamp-image-area crms-fg-black2"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxFlexOffset="20px"
+  >
+    <img [src]="getImageSrc(slideIndex)" class="stamp-image" />
+  </div>
+</div>

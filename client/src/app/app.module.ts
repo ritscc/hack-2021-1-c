@@ -34,6 +34,7 @@ import { StampsNewComponent } from './components/page/stamps/stamps-new/stamps-n
 import { StampsNewFormComponent } from './components/container/stamps-new-form/stamps-new-form.component';
 import { StampNewCardComponent } from './components/presentational/stamp-new-card/stamp-new-card.component';
 import { SlideshowComponent } from './components/page/slideshow/slideshow.component';
+import { SlideshowContentsComponent } from './components/container/slideshow-contents/slideshow-contents.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { SlideshowComponent } from './components/page/slideshow/slideshow.compon
     StampsNewFormComponent,
     StampNewCardComponent,
     SlideshowComponent,
+    SlideshowContentsComponent,
   ],
   imports: [SharedModule, BrowserModule, AppRoutingModule],
   providers: [],

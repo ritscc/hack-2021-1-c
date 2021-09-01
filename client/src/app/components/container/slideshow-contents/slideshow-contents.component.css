@@ -1,0 +1,18 @@
+.slideshow-content {
+  padding: 0px 20px 0px 20px;
+}
+
+.slide-title {
+  margin-left: 20px;
+}
+
+.stamp-image-area {
+  height: calc(100vh - 46px - 80px - 50px - 25px - 20px - 100px);
+  margin: 0px 100px 0px 100px;
+  background-color: #eeeeee;
+}
+
+.stamp-image {
+  height: 100%;
+  width: auto;
+}
