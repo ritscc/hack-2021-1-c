@@ -23,6 +23,7 @@ export interface StampsModel {
 // 添付ファイルモデル
 export interface StampAttachmentModel {
   id: number;
+	stampId: number;
   name: string;
   uuid: string;
 }

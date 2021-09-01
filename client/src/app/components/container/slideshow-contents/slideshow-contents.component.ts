@@ -30,7 +30,11 @@ export class SlideshowContentsComponent implements OnInit {
         // 添付ファイル一覧を取得
         this.stamps.forEach((stamp) => {
           this.attachments = this.attachments.concat(stamp.attachments);
-          this.attachments.forEach((attachment) => this.downloadAttachment(attachment));
+          this.attachments.forEach((attachment) => {
+            attachment.stampId = stamp.id;
+            this.attachments.push(attachment);
+            this.downloadAttachment(attachment);
+          });
         });
       },
       (error) => {
@@ -55,8 +59,21 @@ export class SlideshowContentsComponent implements OnInit {
     );
   }
 
+  getSlideTitle(index: number): string {
+    if (this.attachments[index] === undefined) {
+      return '';
+    }
+
+    const stamp = this.stampService.selectById(this.attachments[index].stampId);
+    if (stamp === undefined) {
+      return '';
+    } else {
+      return stamp.title;
+    }
+  }
+
   getImageSrc(index: number): SafeUrl {
-    return this.images[index % this.images.length];
+    return this.images[index];
   }
 
   onPreviousClick(): void {
@@ -68,5 +85,6 @@ export class SlideshowContentsComponent implements OnInit {
 
   onNextClick(): void {
     this.slideIndex++;
+    this.slideIndex %= this.images.length;
   }
 }
