@@ -13,7 +13,7 @@ import { StampService } from 'src/app/shared/services/stamp.service';
 export class SlideshowContentsComponent implements OnInit {
   stamps: StampModel[] = [];
   attachments: StampAttachmentModel[] = [];
-  images: SafeUrl[] = [];
+  images: { attachmentId: number; src: SafeUrl }[] = [];
   slideIndex: number = 0;
 
   constructor(
@@ -30,6 +30,8 @@ export class SlideshowContentsComponent implements OnInit {
         stamps.forEach((stamp) => {
           stamp.attachments.forEach((attachment) => {
             attachment.stampId = stamp.id;
+            console.log(stamp);
+            console.log(attachment.stampId);
             this.attachments.push(attachment);
             this.downloadAttachment(attachment);
           });
@@ -49,7 +51,7 @@ export class SlideshowContentsComponent implements OnInit {
         reader.readAsDataURL(attachmentBlob);
         reader.onloadend = () => {
           let src = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
-          this.images.push(src);
+          this.images.push({ attachmentId: attachment.id, src: src });
         };
       },
       (error) => {
@@ -64,8 +66,7 @@ export class SlideshowContentsComponent implements OnInit {
     }
 
     const stampId = this.attachments[index].stampId;
-    // const stamp = this.stampService.selectById(this.attachments[index].stampId);
-    const stamp = this.stamps.find((stamp) => stamp.id == stampId);
+    const stamp = this.stampService.selectById(stampId);
     if (stamp === undefined) {
       return '';
     } else {
@@ -73,8 +74,13 @@ export class SlideshowContentsComponent implements OnInit {
     }
   }
 
-  getImageSrc(index: number): SafeUrl {
-    return this.images[index];
+  getImageSrc(index: number): SafeUrl | undefined {
+    const img = this.images.find((image) => image.attachmentId == this.attachments[index].id);
+    if (img === undefined) {
+      return undefined;
+    } else {
+      return img.src;
+    }
   }
 
   onPreviousClick(): void {
