@@ -26,16 +26,15 @@ export class SlideshowContentsComponent implements OnInit {
     // スタンプ一覧を取得
     this.stampService.getStamps().subscribe(
       (stamps) => {
-        this.stamps = stamps;
         // 添付ファイル一覧を取得
-        this.stamps.forEach((stamp) => {
-          this.attachments = this.attachments.concat(stamp.attachments);
-          this.attachments.forEach((attachment) => {
+        stamps.forEach((stamp) => {
+          stamp.attachments.forEach((attachment) => {
             attachment.stampId = stamp.id;
             this.attachments.push(attachment);
             this.downloadAttachment(attachment);
           });
         });
+        this.stamps = stamps;
       },
       (error) => {
         this.alertService.openSnackBar(error, 'ERROR');
@@ -64,7 +63,9 @@ export class SlideshowContentsComponent implements OnInit {
       return '';
     }
 
-    const stamp = this.stampService.selectById(this.attachments[index].stampId);
+    const stampId = this.attachments[index].stampId;
+    // const stamp = this.stampService.selectById(this.attachments[index].stampId);
+    const stamp = this.stamps.find((stamp) => stamp.id == stampId);
     if (stamp === undefined) {
       return '';
     } else {
